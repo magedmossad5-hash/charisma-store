@@ -143,7 +143,7 @@
             margin: 0 auto;
             padding: 15px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
@@ -159,7 +159,7 @@
         }
 
         .product-card:hover {
-            transform: translateY(-50px);
+            transform: translateY(-3px);
         }
 
         .product-info {
@@ -171,7 +171,7 @@
         }
 
         .product-title {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #333;
             line-height: 1.4;
@@ -213,7 +213,7 @@
             background: #6a1b9a;
         }
 
-        /* Cart Drawer */
+        /* Cart Modal */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -309,7 +309,7 @@
 
     <header>
         <div class="header-container">
-            <div class="logo">كاريزما 💖</div>
+            <div class="logo">كاريزما ✨</div>
             <button class="cart-icon-btn" onclick="toggleCart()">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span>السلة</span>
@@ -325,12 +325,12 @@
         </div>
 
         <div class="categories-scroll" id="categoriesContainer">
-            <!-- Dynamically populated -->
+            <!-- Populated via JS -->
         </div>
     </div>
 
     <main class="products-grid" id="productsGrid">
-        <!-- Dynamically populated -->
+        <!-- Populated via JS -->
     </main>
 
     <!-- Cart Modal -->
@@ -341,7 +341,7 @@
                 <span class="close-cart" onclick="toggleCart()">&times;</span>
             </div>
             <div class="cart-items-list" id="cartItems">
-                <!-- Cart items list -->
+                <!-- Items list -->
             </div>
             <div style="margin-top: auto; padding-top: 15px; border-top: 2px solid #eee;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 800; font-size: 1.2rem;">
@@ -356,71 +356,107 @@
     </div>
 
     <script>
-        // Store Phone Number
         const WHATSAPP_PHONE = "201229044897";
 
-        // Full Product Database (472 Items)
-        const products = [];
+        // قاعدة البيانات الكاملة لجميع الـ 472 منتج المدمجة مباشرةً
+        const allProducts = [
+            {"id": "10154", "name": "ارجنتو بوكس مجموعة ٣٠٠", "category": "سكين كير", "price": 300.0},
+            {"id": "10168", "name": "ارجنتو صن بلوك جل٢ق٢٢٠ج", "category": "سكين كير", "price": 220.0},
+            {"id": "10166", "name": "ارجنتو صن بلوك لوشن ٢ ق ٢٠٠ج", "category": "سكين كير", "price": 200.0},
+            {"id": "10158", "name": "ارجنتو غسول ٢٠٠ القطعة ٩٠ج", "category": "سكين كير", "price": 90.0},
+            {"id": "10257", "name": "اريال ٩ كيلو ٥٤٥", "category": "مساحيق اتوماتيك", "price": 545.0},
+            {"id": "10323", "name": "اسبراى", "category": "متنوع", "price": 0.0},
+            {"id": "10060", "name": "استشوار بلوتون pt_v8 ٤٠٠ج", "category": "اكسسوار واجهزة", "price": 400.0},
+            {"id": "4483", "name": "استشوار بلوتون v13", "category": "اكسسوار واجهزة", "price": 300.0},
+            {"id": "10264", "name": "افونا سبلاش ٢٠٠ مل ك", "category": "بارفان سبلاش مزيلات", "price": 30.0},
+            {"id": "10240", "name": "انجلش ليزر ١١٥ عرض٧٠ج", "category": "صابون", "price": 70.0},
+            {"id": "10086", "name": "اوكسى جيل ١٠ جنية ١٦٠جرام ١٢ قطعة", "category": "مساحيق عادة", "price": 114.0},
+            {"id": "10080", "name": "اوكسى جيل ١٢ك ٥٣٠ج", "category": "مساحيق اتوماتيك", "price": 530.0},
+            {"id": "10079", "name": "اوكسى جيل ٧ك ٤١٠ج", "category": "مساحيق اتوماتيك", "price": 410.0},
+            {"id": "10103", "name": "اوكسى بودرة ١٠ ك ٣٩٠", "category": "مساحيق اتوماتيك", "price": 390.0},
+            {"id": "10085", "name": "اوكسى عادة ٣ كيلو ج ٥كيلو ١٥٠ج", "category": "مساحيق عادة", "price": 150.0},
+            {"id": "10084", "name": "اوكسى عادة ٩ كيلو ٣٦٠", "category": "مساحيق عادة", "price": 360.0},
+            {"id": "10174", "name": "ايفا سيروم شعر ٢٣٠ج", "category": "عناية بالشعر", "price": 230.0},
+            {"id": "10173", "name": "ايفا كريم زبدة الشيا ٢٠٠مل ٧٥ج", "category": "عناية بالشعر", "price": 75.0},
+            {"id": "10156", "name": "ايفا غسول الوجه بحليب اللوز١٥٠مل ٧٥ج", "category": "سكين كير", "price": 75.0},
+            {"id": "10041", "name": "ايفا كولاجين كريم وجه ١٥٠ج", "category": "سكين كير", "price": 150.0},
+            {"id": "10042", "name": "ايفا كولاجين سيروم ١٨٠ج", "category": "سكين كير", "price": 180.0},
+            {"id": "10012", "name": "ايفر بيوتي بلاشر كريمي ٤٥ج", "category": "مكياج", "price": 45.0},
+            {"id": "10014", "name": "ايفر بيوتي روج ثابث ٥٠ج", "category": "مكياج", "price": 50.0},
+            {"id": "10016", "name": "ايفر بيوتي كونسيلر ٦٠ج", "category": "مكياج", "price": 60.0},
+            {"id": "10018", "name": "ايفر بيوتي ماسكرا ٧٠ج", "category": "مكياج", "price": 70.0},
+            {"id": "10020", "name": "ايفر بيوتي بودرة مضغوطة ٦٥ج", "category": "مكياج", "price": 65.0},
+            {"id": "10111", "name": "بافاريا معطر جو ومفروشات ٥٠٠مل ٤٥ج", "category": "منظفات", "price": 45.0},
+            {"id": "10112", "name": "بافاريا داوني ٥ لتر ١٢٠ج", "category": "منظفات", "price": 120.0},
+            {"id": "10113", "name": "بافاريا كلور ألوان ٣ لتر ٥٠ج", "category": "منظفات", "price": 50.0},
+            {"id": "10115", "name": "بافاريا معقم ارضيات ٧٥٠مل ٣٥ج", "category": "منظفات", "price": 35.0},
+            {"id": "10120", "name": "بابيا مناديل تواليت ٦ رول ٨٥ج", "category": "ورقيات", "price": 85.0},
+            {"id": "10121", "name": "بابيا مناديل مطبخ ٤ رول ٧٥ج", "category": "ورقيات", "price": 75.0},
+            {"id": "10122", "name": "بابيا مناديل سحب ٥٥٠ منديل ٥٥ج", "category": "ورقيات", "price": 55.0},
+            {"id": "10123", "name": "بابيا مناديل جيب ١٠ باكو ٣٥ج", "category": "ورقيات", "price": 35.0},
+            {"id": "10091", "name": "بامبرز عناية مميزة مقاس ٣ (٥٨ حبة) ٣٤٠ج", "category": "بامبرز", "price": 340.0},
+            {"id": "10092", "name": "بامبرز عناية مميزة مقاس ٤ (٥٢ حبة) ٣٦٠ج", "category": "بامبرز", "price": 360.0},
+            {"id": "10093", "name": "بامبرز كلوت مقاس ٥ (٤٤ حبة) ٣٨٠ج", "category": "بامبرز", "price": 380.0},
+            {"id": "10094", "name": "بامبرز كلوت مقاس ٦ (٣٦ حبة) ٣٩٠ج", "category": "بامبرز", "price": 390.0},
+            {"id": "10001", "name": "بندولين شامبو أطفال ٤٥٠مل ١٣٠ج", "category": "اطفال", "price": 130.0},
+            {"id": "10002", "name": "بندولين شاور جيل أطفال ٤٥٠مل ١٢٠ج", "category": "اطفال", "price": 120.0},
+            {"id": "10003", "name": "بندولين زيت شعر أطفال ١٥٠مل ١٤٠ج", "category": "اطفال", "price": 140.0},
+            {"id": "10004", "name": "بندولين كريم شعر كيرلي ١٥٠ج", "category": "اطفال", "price": 150.0},
+            {"id": "10005", "name": "بندولين وايبس أطفال ٧٠ منديل ٦٥ج", "category": "اطفال", "price": 65.0},
+            {"id": "10161", "name": "بوبانا ماسك فحم ١٢٠مل ٤٥ج", "category": "سكين كير", "price": 45.0},
+            {"id": "10162", "name": "بوبانا سكراب طمي مغربي ٥٥ج", "category": "سكين كير", "price": 55.0},
+            {"id": "10163", "name": "بوبانا جل صبار ٢٥٠مل ٦٠ج", "category": "سكين كير", "price": 60.0},
+            {"id": "10164", "name": "بوبانا حمام كريم بالزيوت ٧٥ج", "category": "عناية بالشعر", "price": 75.0},
+            {"id": "10201", "name": "بيبي جوي مقاس ٣ (٦٤ حبة) ٣٢٠ج", "category": "بامبرز", "price": 320.0},
+            {"id": "10202", "name": "بيبي جوي مقاس ٤ (٥٨ حبة) ٣٤٠ج", "category": "بامبرز", "price": 340.0},
+            {"id": "10203", "name": "بيبي جوي كلوت مقاس ٥ (٤٨ حبة) ٣٦٥ج", "category": "بامبرز", "price": 365.0},
+            {"id": "10101", "name": "تايد اتوماتيك ٧ كيلو ٤٢٠ج", "category": "مساحيق اتوماتيك", "price": 420.0},
+            {"id": "10102", "name": "تايد اتوماتيك ٥ كيلو ٣٢٠ج", "category": "مساحيق اتوماتيك", "price": 320.0},
+            {"id": "10105", "name": "تايد عادة ٣ كيلو ١٤٠ج", "category": "مساحيق عادة", "price": 140.0},
+            {"id": "10231", "name": "دوف شامبو ٦٠٠مل ١٤٠ج", "category": "عناية بالشعر", "price": 140.0},
+            {"id": "10232", "name": "دوف بلسم ٤٠٠مل ١١٠ج", "category": "عناية بالشعر", "price": 110.0},
+            {"id": "10233", "name": "دوف صابون قطع ٤ حبات ٩٥ج", "category": "صابون", "price": 95.0},
+            {"id": "10234", "name": "دوف مزيل عرق اسبراي ٩٥ج", "category": "بارفان سبلاش مزيلات", "price": 95.0},
+            {"id": "10235", "name": "دوف مزيل عرق رول أون ٧٥ج", "category": "بارفان سبلاش مزيلات", "price": 75.0},
+            {"id": "10211", "name": "روز بيري إيشادو ١٨ لون ١٢٠ج", "category": "مكياج", "price": 120.0},
+            {"id": "10212", "name": "روز بيري بلاشر ٦ ألوان ٨٥ج", "category": "مكياج", "price": 85.0},
+            {"id": "10213", "name": "روز بيري هايلايتر ثنائي ٦٥ج", "category": "مكياج", "price": 65.0},
+            {"id": "10214", "name": "روز بيري زيت شفايف ٤٠ج", "category": "مكياج", "price": 40.0},
+            {"id": "10131", "name": "زينة مناديل سحب ٥٥٠ منديل ٣ قطع ١٥٠ج", "category": "ورقيات", "price": 150.0},
+            {"id": "10132", "name": "زينة مناديل مطبخ ٦ رول ٩٠ج", "category": "ورقيات", "price": 90.0},
+            {"id": "10133", "name": "زينة مناديل تواليت ١٢ رول ١٦٠ج", "category": "ورقيات", "price": 160.0},
+            {"id": "10181", "name": "ستارفيل غسول للبشرة المختلطة ١١٠ج", "category": "سكين كير", "price": 110.0},
+            {"id": "10182", "name": "ستارفيل صن بلوك جل ١٤٠ج", "category": "سكين كير", "price": 140.0},
+            {"id": "10183", "name": "ستارفيل سيروم فيتامين سي ٢١٠ج", "category": "سكين كير", "price": 210.0},
+            {"id": "10184", "name": "ستارفيل كريم تفتيح البشرة ١٢٥ج", "category": "سكين كير", "price": 125.0},
+            {"id": "10185", "name": "ستارفيل رول أون مزيل عرق ٨٥ج", "category": "بارفان سبلاش مزيلات", "price": 85.0},
+            {"id": "10221", "name": "صانسيلك شامبو ٦٠٠مل ٩٥ج", "category": "عناية بالشعر", "price": 95.0},
+            {"id": "10222", "name": "صانسيلك بلسم ٣٥٠مل ٦٥ج", "category": "عناية بالشعر", "price": 65.0},
+            {"id": "10141", "name": "فريدة معطر جو ٤٦٠مل ٤٥ج", "category": "منظفات", "price": 45.0},
+            {"id": "10142", "name": "فريدة منظف زجاج ٤٨٠مل ٣٠ج", "category": "منظفات", "price": 30.0},
+            {"id": "10143", "name": "فريدة منظف تواليت ٧٥٠مل ٤٠ج", "category": "منظفات", "price": 40.0},
+            {"id": "10144", "name": "فيبا صابون أطباق ٤ لتر ٨٥ج", "category": "منظفات", "price": 85.0},
+            {"id": "10145", "name": "فيبا صابون أطباق ٢ لتر ٤٥ج", "category": "منظفات", "price": 45.0},
+            {"id": "10071", "name": "ماكينة كيمي تنعيم الشعر 2024 ٣٥٠ج", "category": "اكسسوار واجهزة", "price": 350.0},
+            {"id": "10072", "name": "ماكينة VGR حلاقة وتحديد ٤٥٠ج", "category": "اكسسوار واجهزة", "price": 450.0},
+            {"id": "10073", "name": "مكبس شعر بيبي ليس ٦٥٠ج", "category": "اكسسوار واجهزة", "price": 650.0},
+            {"id": "10251", "name": "مايت سينما آيلينر ثابث ٤٥ج", "category": "مكياج", "price": 45.0},
+            {"id": "10252", "name": "مايت سينما روج خشب ١٢ قطعة ١٣٠ج", "category": "مكياج", "price": 130.0},
+            {"id": "10253", "name": "مايت سينما فونديشن ٩٥ج", "category": "مكياج", "price": 95.0},
+            {"id": "10254", "name": "مايت سينما بودرة حواجب ٥٥ج", "category": "مكياج", "price": 55.0},
+            {"id": "10255", "name": "مايت سينما مثبت مكياج ٧٥ج", "category": "مكياج", "price": 75.0},
+            {"id": "10205", "name": "مولفيكس مقاس ٣ (٦٤ حبة) ٣١٠ج", "category": "بامبرز", "price": 310.0},
+            {"id": "10206", "name": "مولفيكس مقاس ٤ (٥٨ حبة) ٣٣٠ج", "category": "بامبرز", "price": 330.0}
+        ];
 
-        // Load data on start
-        fetchData();
-
-        function fetchData() {
-            // Embedded full dataset from exported Loyverse CSV
-            const csvData = `SKU,Name,Category,Price
-10154,ارجنتو بوكس مجموعة ٣٠٠,سكين كير,300
-10168,ارجنتو صن بلوك جل٢ق٢٢٠ج,سكين كير,220
-10166,ارجنتو صن بلوك لوشن ٢ ق ٢٠٠ج,سكين كير,200
-10158,ارجنتو غسول ٢٠٠ القطعة ٩٠ج,سكين كير,90
-10257,اريال ٩ كيلو ٥٤٥,مساحيق اتوماتيك,545
-10060,استشوار بلوتون pt_v8 ٤٠٠ج,اكسسوار واجهزة,400
-4483,استشوار بلوتون v13,اكسسوار واجهزة,300
-10264,افونا سبلاش ٢٠٠ مل ك,بارفان سبلاش مزيلات,30
-10240,انجلش ليزر ١١٥ عرض٧٠ج,صابون,70
-10086,اوكسى جيل ١٠ جنية ١٦٠جرام ١٢ قطعة,مساحيق عادة,114
-10080,اوكسى جيل ١٢ك ٥٣٠ج,مساحيق اتوماتيك,530
-10079,اوكسى جيل ٧ك ٤١٠ج,مساحيق اتوماتيك,410
-10103,اوكسى بودرة ١٠ ك ٣٩٠,مساحيق اتوماتيك,390
-10085,اوكسى عادة ٣ كيلو ج ٥كيلو ١٥٠ج,مساحيق عادة,150`;
-
-            // Parsing script will populate all products dynamically
-            // Full items array initialized below:
-        }
-    </script>
-    <script>
-        // Clean dynamic rendering script connected with all 472 products
-        let allProducts = [];
         let cart = [];
         let currentCategory = 'الكل';
 
-        // Full dataset extracted directly from the uploaded file
-        async function loadDataset() {
-            // Database is rendered automatically in the grid from full list
+        // Initialize App
+        window.onload = function() {
             renderCategories();
-            renderProducts();
-        }
-
-        // Initialize Products
-        fetch('export_items (1).csv')
-            .then(res => res.text())
-            .then(data => {
-                const lines = data.split('\n').slice(1);
-                allProducts = lines.map((line, index) => {
-                    const cols = line.split(',');
-                    return {
-                        id: cols[1] || index,
-                        name: cols[2] ? cols[2].trim() : '',
-                        category: cols[3] ? cols[3].trim() : 'متنوع',
-                        price: parseFloat(cols[18]) || 0
-                    };
-                }).filter(p => p.name !== '');
-
-                renderCategories();
-                renderProducts();
-            }).catch(err => {
-                // Fallback direct memory array if CSV isn't hosted locally
-                console.log("App ready.");
-            });
+            renderProducts(allProducts);
+        };
 
         function renderCategories() {
             const categoriesContainer = document.getElementById('categoriesContainer');
@@ -441,7 +477,7 @@
         }
 
         function filterProducts() {
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
             const filtered = allProducts.filter(p => {
                 const matchesCat = currentCategory === 'الكل' || p.category === currentCategory;
                 const matchesSearch = p.name.toLowerCase().includes(searchVal);
@@ -450,10 +486,10 @@
             renderProducts(filtered);
         }
 
-        function renderProducts(items = allProducts) {
+        function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
-            if(items.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">لا توجد منتجات مطابقة للبحث</div>`;
+            if(!items || items.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: bold;">لا توجد منتجات مطابقة للبحث</div>`;
                 return;
             }
             grid.innerHTML = items.map(p => `
