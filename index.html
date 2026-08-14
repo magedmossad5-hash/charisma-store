@@ -1,583 +1,79 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كاريزما - Charisma Store</title>
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charisma Store</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body { background-color: #121212; color: #fff; padding: 15px; }
+    h1 { text-align: center; margin-bottom: 20px; color: #ff2a74; font-size: 24px; }
     
-    <style>
-        :root {
-            --primary-color: #e91e63;
-            --secondary-color: #8e24aa;
-            --dark-color: #212121;
-            --light-bg: #f8f9fa;
-            --white: #ffffff;
-            --shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            color: var(--dark-color);
-            padding-bottom: 80px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
-            padding: 20px 15px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
-        .cart-icon-btn {
-            position: relative;
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            padding: 10px 18px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .cart-badge {
-            background: #d32f2f;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 7px;
-            font-size: 0.8rem;
-        }
-
-        .controls-section {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 45px 14px 15px;
-            border: 2px solid #ddd;
-            border-radius: 30px;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--primary-color);
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-        }
-
-        .categories-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scrollbar-width: thin;
-        }
-
-        .category-btn {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 8px 18px;
-            border-radius: 20px;
-            white-space: nowrap;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .category-btn.active, .category-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .products-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .product-info {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
-        }
-
-        .product-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #333;
-            line-height: 1.4;
-        }
-
-        .product-category {
-            font-size: 0.8rem;
-            color: #777;
-            background: #eee;
-            padding: 3px 8px;
-            border-radius: 10px;
-            width: fit-content;
-        }
-
-        .product-price {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-top: auto;
-        }
-
-        .add-to-cart-btn {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-        }
-
-        .add-to-cart-btn:hover {
-            background: #6a1b9a;
-        }
-
-        /* Cart Modal */
-        .cart-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: flex-end;
-            z-index: 2000;
-        }
-
-        .cart-content {
-            background: white;
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 15px;
-        }
-
-        .close-cart {
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .cart-items-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin: 15px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-
-        .cart-item-title {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .qty-btn {
-            background: #ddd;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .checkout-btn {
-            background: #25d366;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-    </style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid #2a2a2a;
+    }
+    
+    .category {
+      color: #ff2a74;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    
+    .title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    
+    .btn {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      padding: 8px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-container">
-            <div class="logo">كاريزما ✨</div>
-            <button class="cart-icon-btn" onclick="toggleCart()">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span>السلة</span>
-                <span class="cart-badge" id="cartCount">0</span>
-            </button>
-        </div>
-    </header>
+  <h1>كاريزما ستور - Charisma Store</h1>
+  <div class="grid-container" id="products-list"></div>
 
-    <div class="controls-section">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="filterProducts()">
-        </div>
-
-        <div class="categories-scroll" id="categoriesContainer">
-            <!-- Populated via JS -->
-        </div>
-    </div>
-
-    <main class="products-grid" id="productsGrid">
-        <!-- Populated via JS -->
-    </main>
-
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <div class="cart-header">
-                <h3>سلة الشراء 🛒</h3>
-                <span class="close-cart" onclick="toggleCart()">&times;</span>
+  <script>
+    fetch('products.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('products-list');
+        container.innerHTML = data.map(item => `
+          <div class="card">
+            <div>
+              <div class="category">كود: ${item.id}</div>
+              <div class="title">${item.name}</div>
             </div>
-            <div class="cart-items-list" id="cartItems">
-                <!-- Items list -->
-            </div>
-            <div style="margin-top: auto; padding-top: 15px; border-top: 2px solid #eee;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 800; font-size: 1.2rem;">
-                    <span>الإجمالي:</span>
-                    <span id="cartTotal">0 ج.م</span>
-                </div>
-                <button class="checkout-btn" onclick="sendToWhatsApp()">
-                    <i class="fa-brands fa-whatsapp"></i> إرسال الطلب عبر الواتساب
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const WHATSAPP_PHONE = "201229044897";
-
-        // قاعدة البيانات الكاملة لجميع الـ 472 منتج المدمجة مباشرةً
-        const allProducts = [
-            {"id": "10154", "name": "ارجنتو بوكس مجموعة ٣٠٠", "category": "سكين كير", "price": 300.0},
-            {"id": "10168", "name": "ارجنتو صن بلوك جل٢ق٢٢٠ج", "category": "سكين كير", "price": 220.0},
-            {"id": "10166", "name": "ارجنتو صن بلوك لوشن ٢ ق ٢٠٠ج", "category": "سكين كير", "price": 200.0},
-            {"id": "10158", "name": "ارجنتو غسول ٢٠٠ القطعة ٩٠ج", "category": "سكين كير", "price": 90.0},
-            {"id": "10257", "name": "اريال ٩ كيلو ٥٤٥", "category": "مساحيق اتوماتيك", "price": 545.0},
-            {"id": "10323", "name": "اسبراى", "category": "متنوع", "price": 0.0},
-            {"id": "10060", "name": "استشوار بلوتون pt_v8 ٤٠٠ج", "category": "اكسسوار واجهزة", "price": 400.0},
-            {"id": "4483", "name": "استشوار بلوتون v13", "category": "اكسسوار واجهزة", "price": 300.0},
-            {"id": "10264", "name": "افونا سبلاش ٢٠٠ مل ك", "category": "بارفان سبلاش مزيلات", "price": 30.0},
-            {"id": "10240", "name": "انجلش ليزر ١١٥ عرض٧٠ج", "category": "صابون", "price": 70.0},
-            {"id": "10086", "name": "اوكسى جيل ١٠ جنية ١٦٠جرام ١٢ قطعة", "category": "مساحيق عادة", "price": 114.0},
-            {"id": "10080", "name": "اوكسى جيل ١٢ك ٥٣٠ج", "category": "مساحيق اتوماتيك", "price": 530.0},
-            {"id": "10079", "name": "اوكسى جيل ٧ك ٤١٠ج", "category": "مساحيق اتوماتيك", "price": 410.0},
-            {"id": "10103", "name": "اوكسى بودرة ١٠ ك ٣٩٠", "category": "مساحيق اتوماتيك", "price": 390.0},
-            {"id": "10085", "name": "اوكسى عادة ٣ كيلو ج ٥كيلو ١٥٠ج", "category": "مساحيق عادة", "price": 150.0},
-            {"id": "10084", "name": "اوكسى عادة ٩ كيلو ٣٦٠", "category": "مساحيق عادة", "price": 360.0},
-            {"id": "10174", "name": "ايفا سيروم شعر ٢٣٠ج", "category": "عناية بالشعر", "price": 230.0},
-            {"id": "10173", "name": "ايفا كريم زبدة الشيا ٢٠٠مل ٧٥ج", "category": "عناية بالشعر", "price": 75.0},
-            {"id": "10156", "name": "ايفا غسول الوجه بحليب اللوز١٥٠مل ٧٥ج", "category": "سكين كير", "price": 75.0},
-            {"id": "10041", "name": "ايفا كولاجين كريم وجه ١٥٠ج", "category": "سكين كير", "price": 150.0},
-            {"id": "10042", "name": "ايفا كولاجين سيروم ١٨٠ج", "category": "سكين كير", "price": 180.0},
-            {"id": "10012", "name": "ايفر بيوتي بلاشر كريمي ٤٥ج", "category": "مكياج", "price": 45.0},
-            {"id": "10014", "name": "ايفر بيوتي روج ثابث ٥٠ج", "category": "مكياج", "price": 50.0},
-            {"id": "10016", "name": "ايفر بيوتي كونسيلر ٦٠ج", "category": "مكياج", "price": 60.0},
-            {"id": "10018", "name": "ايفر بيوتي ماسكرا ٧٠ج", "category": "مكياج", "price": 70.0},
-            {"id": "10020", "name": "ايفر بيوتي بودرة مضغوطة ٦٥ج", "category": "مكياج", "price": 65.0},
-            {"id": "10111", "name": "بافاريا معطر جو ومفروشات ٥٠٠مل ٤٥ج", "category": "منظفات", "price": 45.0},
-            {"id": "10112", "name": "بافاريا داوني ٥ لتر ١٢٠ج", "category": "منظفات", "price": 120.0},
-            {"id": "10113", "name": "بافاريا كلور ألوان ٣ لتر ٥٠ج", "category": "منظفات", "price": 50.0},
-            {"id": "10115", "name": "بافاريا معقم ارضيات ٧٥٠مل ٣٥ج", "category": "منظفات", "price": 35.0},
-            {"id": "10120", "name": "بابيا مناديل تواليت ٦ رول ٨٥ج", "category": "ورقيات", "price": 85.0},
-            {"id": "10121", "name": "بابيا مناديل مطبخ ٤ رول ٧٥ج", "category": "ورقيات", "price": 75.0},
-            {"id": "10122", "name": "بابيا مناديل سحب ٥٥٠ منديل ٥٥ج", "category": "ورقيات", "price": 55.0},
-            {"id": "10123", "name": "بابيا مناديل جيب ١٠ باكو ٣٥ج", "category": "ورقيات", "price": 35.0},
-            {"id": "10091", "name": "بامبرز عناية مميزة مقاس ٣ (٥٨ حبة) ٣٤٠ج", "category": "بامبرز", "price": 340.0},
-            {"id": "10092", "name": "بامبرز عناية مميزة مقاس ٤ (٥٢ حبة) ٣٦٠ج", "category": "بامبرز", "price": 360.0},
-            {"id": "10093", "name": "بامبرز كلوت مقاس ٥ (٤٤ حبة) ٣٨٠ج", "category": "بامبرز", "price": 380.0},
-            {"id": "10094", "name": "بامبرز كلوت مقاس ٦ (٣٦ حبة) ٣٩٠ج", "category": "بامبرز", "price": 390.0},
-            {"id": "10001", "name": "بندولين شامبو أطفال ٤٥٠مل ١٣٠ج", "category": "اطفال", "price": 130.0},
-            {"id": "10002", "name": "بندولين شاور جيل أطفال ٤٥٠مل ١٢٠ج", "category": "اطفال", "price": 120.0},
-            {"id": "10003", "name": "بندولين زيت شعر أطفال ١٥٠مل ١٤٠ج", "category": "اطفال", "price": 140.0},
-            {"id": "10004", "name": "بندولين كريم شعر كيرلي ١٥٠ج", "category": "اطفال", "price": 150.0},
-            {"id": "10005", "name": "بندولين وايبس أطفال ٧٠ منديل ٦٥ج", "category": "اطفال", "price": 65.0},
-            {"id": "10161", "name": "بوبانا ماسك فحم ١٢٠مل ٤٥ج", "category": "سكين كير", "price": 45.0},
-            {"id": "10162", "name": "بوبانا سكراب طمي مغربي ٥٥ج", "category": "سكين كير", "price": 55.0},
-            {"id": "10163", "name": "بوبانا جل صبار ٢٥٠مل ٦٠ج", "category": "سكين كير", "price": 60.0},
-            {"id": "10164", "name": "بوبانا حمام كريم بالزيوت ٧٥ج", "category": "عناية بالشعر", "price": 75.0},
-            {"id": "10201", "name": "بيبي جوي مقاس ٣ (٦٤ حبة) ٣٢٠ج", "category": "بامبرز", "price": 320.0},
-            {"id": "10202", "name": "بيبي جوي مقاس ٤ (٥٨ حبة) ٣٤٠ج", "category": "بامبرز", "price": 340.0},
-            {"id": "10203", "name": "بيبي جوي كلوت مقاس ٥ (٤٨ حبة) ٣٦٥ج", "category": "بامبرز", "price": 365.0},
-            {"id": "10101", "name": "تايد اتوماتيك ٧ كيلو ٤٢٠ج", "category": "مساحيق اتوماتيك", "price": 420.0},
-            {"id": "10102", "name": "تايد اتوماتيك ٥ كيلو ٣٢٠ج", "category": "مساحيق اتوماتيك", "price": 320.0},
-            {"id": "10105", "name": "تايد عادة ٣ كيلو ١٤٠ج", "category": "مساحيق عادة", "price": 140.0},
-            {"id": "10231", "name": "دوف شامبو ٦٠٠مل ١٤٠ج", "category": "عناية بالشعر", "price": 140.0},
-            {"id": "10232", "name": "دوف بلسم ٤٠٠مل ١١٠ج", "category": "عناية بالشعر", "price": 110.0},
-            {"id": "10233", "name": "دوف صابون قطع ٤ حبات ٩٥ج", "category": "صابون", "price": 95.0},
-            {"id": "10234", "name": "دوف مزيل عرق اسبراي ٩٥ج", "category": "بارفان سبلاش مزيلات", "price": 95.0},
-            {"id": "10235", "name": "دوف مزيل عرق رول أون ٧٥ج", "category": "بارفان سبلاش مزيلات", "price": 75.0},
-            {"id": "10211", "name": "روز بيري إيشادو ١٨ لون ١٢٠ج", "category": "مكياج", "price": 120.0},
-            {"id": "10212", "name": "روز بيري بلاشر ٦ ألوان ٨٥ج", "category": "مكياج", "price": 85.0},
-            {"id": "10213", "name": "روز بيري هايلايتر ثنائي ٦٥ج", "category": "مكياج", "price": 65.0},
-            {"id": "10214", "name": "روز بيري زيت شفايف ٤٠ج", "category": "مكياج", "price": 40.0},
-            {"id": "10131", "name": "زينة مناديل سحب ٥٥٠ منديل ٣ قطع ١٥٠ج", "category": "ورقيات", "price": 150.0},
-            {"id": "10132", "name": "زينة مناديل مطبخ ٦ رول ٩٠ج", "category": "ورقيات", "price": 90.0},
-            {"id": "10133", "name": "زينة مناديل تواليت ١٢ رول ١٦٠ج", "category": "ورقيات", "price": 160.0},
-            {"id": "10181", "name": "ستارفيل غسول للبشرة المختلطة ١١٠ج", "category": "سكين كير", "price": 110.0},
-            {"id": "10182", "name": "ستارفيل صن بلوك جل ١٤٠ج", "category": "سكين كير", "price": 140.0},
-            {"id": "10183", "name": "ستارفيل سيروم فيتامين سي ٢١٠ج", "category": "سكين كير", "price": 210.0},
-            {"id": "10184", "name": "ستارفيل كريم تفتيح البشرة ١٢٥ج", "category": "سكين كير", "price": 125.0},
-            {"id": "10185", "name": "ستارفيل رول أون مزيل عرق ٨٥ج", "category": "بارفان سبلاش مزيلات", "price": 85.0},
-            {"id": "10221", "name": "صانسيلك شامبو ٦٠٠مل ٩٥ج", "category": "عناية بالشعر", "price": 95.0},
-            {"id": "10222", "name": "صانسيلك بلسم ٣٥٠مل ٦٥ج", "category": "عناية بالشعر", "price": 65.0},
-            {"id": "10141", "name": "فريدة معطر جو ٤٦٠مل ٤٥ج", "category": "منظفات", "price": 45.0},
-            {"id": "10142", "name": "فريدة منظف زجاج ٤٨٠مل ٣٠ج", "category": "منظفات", "price": 30.0},
-            {"id": "10143", "name": "فريدة منظف تواليت ٧٥٠مل ٤٠ج", "category": "منظفات", "price": 40.0},
-            {"id": "10144", "name": "فيبا صابون أطباق ٤ لتر ٨٥ج", "category": "منظفات", "price": 85.0},
-            {"id": "10145", "name": "فيبا صابون أطباق ٢ لتر ٤٥ج", "category": "منظفات", "price": 45.0},
-            {"id": "10071", "name": "ماكينة كيمي تنعيم الشعر 2024 ٣٥٠ج", "category": "اكسسوار واجهزة", "price": 350.0},
-            {"id": "10072", "name": "ماكينة VGR حلاقة وتحديد ٤٥٠ج", "category": "اكسسوار واجهزة", "price": 450.0},
-            {"id": "10073", "name": "مكبس شعر بيبي ليس ٦٥٠ج", "category": "اكسسوار واجهزة", "price": 650.0},
-            {"id": "10251", "name": "مايت سينما آيلينر ثابث ٤٥ج", "category": "مكياج", "price": 45.0},
-            {"id": "10252", "name": "مايت سينما روج خشب ١٢ قطعة ١٣٠ج", "category": "مكياج", "price": 130.0},
-            {"id": "10253", "name": "مايت سينما فونديشن ٩٥ج", "category": "مكياج", "price": 95.0},
-            {"id": "10254", "name": "مايت سينما بودرة حواجب ٥٥ج", "category": "مكياج", "price": 55.0},
-            {"id": "10255", "name": "مايت سينما مثبت مكياج ٧٥ج", "category": "مكياج", "price": 75.0},
-            {"id": "10205", "name": "مولفيكس مقاس ٣ (٦٤ حبة) ٣١٠ج", "category": "بامبرز", "price": 310.0},
-            {"id": "10206", "name": "مولفيكس مقاس ٤ (٥٨ حبة) ٣٣٠ج", "category": "بامبرز", "price": 330.0}
-        ];
-
-        let cart = [];
-        let currentCategory = 'الكل';
-
-        // Initialize App
-        window.onload = function() {
-            renderCategories();
-            renderProducts(allProducts);
-        };
-
-        function renderCategories() {
-            const categoriesContainer = document.getElementById('categoriesContainer');
-            const categories = ['الكل', ...new Set(allProducts.map(p => p.category))];
-            
-            categoriesContainer.innerHTML = categories.map(cat => `
-                <button class="category-btn ${cat === currentCategory ? 'active' : ''}" 
-                        onclick="setCategory('${cat}')">
-                    ${cat}
-                </button>
-            `).join('');
-        }
-
-        function setCategory(cat) {
-            currentCategory = cat;
-            renderCategories();
-            filterProducts();
-        }
-
-        function filterProducts() {
-            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-            const filtered = allProducts.filter(p => {
-                const matchesCat = currentCategory === 'الكل' || p.category === currentCategory;
-                const matchesSearch = p.name.toLowerCase().includes(searchVal);
-                return matchesCat && matchesSearch;
-            });
-            renderProducts(filtered);
-        }
-
-        function renderProducts(items) {
-            const grid = document.getElementById('productsGrid');
-            if(!items || items.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-weight: bold;">لا توجد منتجات مطابقة للبحث</div>`;
-                return;
-            }
-            grid.innerHTML = items.map(p => `
-                <div class="product-card">
-                    <div class="product-info">
-                        <span class="product-category">${p.category}</span>
-                        <div class="product-title">${p.name}</div>
-                        <div class="product-price">${p.price > 0 ? p.price + ' ج.م' : 'حسب الاختيار'}</div>
-                    </div>
-                    <button class="add-to-cart-btn" onclick="addToCart('${p.id}')">
-                        <i class="fa-solid fa-cart-plus"></i> إضافة للسلة
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(productId) {
-            const product = allProducts.find(p => p.id == productId);
-            if (!product) return;
-
-            const existing = cart.find(item => item.id == productId);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
-
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-            cartCount.innerText = totalQty;
-            cartTotal.innerText = totalPrice + ' ج.م';
-
-            cartItems.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <div>
-                        <div class="cart-item-title">${item.name}</div>
-                        <small>${item.price} ج.م</small>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function changeQty(id, change) {
-            const item = cart.find(i => i.id == id);
-            if (item) {
-                item.qty += change;
-                if (item.qty <= 0) {
-                    cart = cart.filter(i => i.id != id);
-                }
-            }
-            updateCart();
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cartModal');
-            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        function sendToWhatsApp() {
-            if (cart.length === 0) {
-                alert('السلة فارغة!');
-                return;
-            }
-
-            let message = "مرحباً، أريد طلب المنتجات التالية من كاريزما:\n\n";
-            cart.forEach(item => {
-                message += `- ${item.name} (العدد: ${item.qty}) - السعر: ${item.price * item.qty} ج.م\n`;
-            });
-
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            message += `\n*الإجمالي: ${total} ج.م*`;
-
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodedMessage}`, '_blank');
-        }
-    </script>
+            <button class="btn">🛒 إضافة للسلة</button>
+          </div>
+        `).join('');
+      })
+      .catch(err => console.error('Error loading JSON:', err));
+  </script>
 </body>
 </html>
