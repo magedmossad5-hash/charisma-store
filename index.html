@@ -5,196 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charisma Store</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: #0d0d0d; color: #ffffff; padding: 14px; padding-bottom: 90px; }
-        
-        /* Header Section */
+
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-        .logo { font-size: 26px; font-weight: 900; color: #ffffff; display: flex; align-items: center; gap: 6px; }
+        .logo { font-size: 26px; font-weight: 900; color: #ffffff; }
         .logo span { color: #e91e63; }
-        .cart-btn { background-color: #e91e63; color: white; padding: 10px 18px; border-radius: 25px; border: none; font-weight: bold; cursor: pointer; font-size: 15px; }
-        
-        /* Title and Search */
+        .cart-btn { background-color: #e91e63; color: white; padding: 10px 18px; border-radius: 25px; border: none; }
+
         .page-title { font-size: 28px; font-weight: 800; margin-bottom: 14px; }
         .page-title span { color: #e91e63; }
         .search-container { position: relative; margin-bottom: 18px; }
-        .search-box { width: 100%; padding: 14px 18px; border-radius: 30px; border: 1px solid #333; background-color: #1a1a1a; color: white; outline: none; font-size: 15px; }
-        
-        /* Categories Scroll */
+        .search-box { width: 100%; padding: 14px 18px; border-radius: 30px; border: 1px solid #333; background-color: #1a1a1a; color: white; }
+
         .categories { display: flex; gap: 12px; margin-bottom: 22px; overflow-x: auto; padding-bottom: 6px; }
-        .cat-card { background-color: #181818; border: 1px solid #333; border-radius: 18px; min-width: 95px; padding: 12px 10px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .cat-card { background-color: #181818; border: 1px solid #333; border-radius: 18px; min-width: 95px; padding: 12px; text-align: center; cursor: pointer; }
         .cat-card.active { border-color: #e91e63; background-color: #26121a; }
         .cat-icon { font-size: 26px; }
         .cat-title { font-size: 13px; font-weight: 700; color: #ddd; white-space: nowrap; }
-        
-        /* Product Grid & Cards */
+
         .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .product-card { background-color: #161616; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #2a2a2a; }
+        .product-card { background-color: #161616; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
         
         .img-container { position: relative; width: 100%; height: 210px; background-color: #222; }
         .product-img { width: 100%; height: 100%; object-fit: cover; }
-        .badge-discount { position: absolute; top: 10px; right: 10px; background-color: #e91e63; color: white; padding: 5px 12px; border-radius: 14px; font-size: 12px; font-weight: bold; }
-        
+        .badge-discount { position: absolute; top: 10px; right: 10px; background-color: #e91e63; color: white; padding: 4px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+
         .product-info { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
-        .category-tag { font-size: 11px; color: #e91e63; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
-        .product-title { font-size: 15px; font-weight: bold; line-height: 1.3; color: #fff; }
-        .product-desc { font-size: 12px; color: #aaa; line-height: 1.4; margin-bottom: 6px; }
+        .category-tag { font-size: 11px; color: #e91e63; text-transform: uppercase; font-weight: 800; }
+        .product-title { font-size: 20px; font-weight: 800; line-height: 1.3; color: #fff; margin-bottom: 6px; }
+        .product-desc { font-size: 18px; color: #aaa; line-height: 1.4; margin-bottom: 10px; }
         
         .price-container { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-        .current-price { font-size: 18px; font-weight: 900; color: #fff; }
+        .current-price { font-size: 20px; font-weight: 900; color: #fff; }
         .old-price { font-size: 13px; color: #777; text-decoration: line-through; }
-        
-        .add-to-cart { background-color: #ffffff; color: #000000; border: none; padding: 12px; border-radius: 14px; width: 100%; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        .add-to-cart { background-color: #ffffff; color: #000000; border: none; padding: 12px; border-radius: 14px; font-size: 16px; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Charisma <span>✨</span></div>
-        <button class="cart-btn" onclick="sendWhatsApp()">🛒 Cart (<span id="cart-count">0</span>)</button>
+        <div class="logo">Charisma<span>✨</span></div>
+        <button class="cart-btn">Cart (<span>0</span>)</button>
     </header>
 
     <div class="page-title">All <span>Products</span></div>
 
     <div class="search-container">
-        <input type="text" class="search-box" placeholder="🔍 Search products..." onkeyup="searchProducts(this.value)">
+        <input type="text" class="search-box" placeholder="🔍 Search products...">
     </div>
 
-    <!-- الأقسام -->
-    <div class="categories">
+    <div class="categories" id="categories">
         <div class="cat-card active" onclick="filterProducts('all', this)">
-            <span class="cat-icon">🏠</span>
-            <span class="cat-title">All</span>
+            <div class="cat-icon">🏠</div>
+            <div class="cat-title">All</div>
         </div>
         <div class="cat-card" onclick="filterProducts('skin', this)">
-            <span class="cat-icon">🌿</span>
-            <span class="cat-title">Skin Care</span>
+            <div class="cat-icon">🌿</div>
+            <div class="cat-title">Skin Care</div>
         </div>
         <div class="cat-card" onclick="filterProducts('hair', this)">
-            <span class="cat-icon">💇‍♀️</span>
-            <span class="cat-title">Hair Care</span>
-        </div>
-        <div class="cat-card" onclick="filterProducts('body', this)">
-            <span class="cat-icon">🧴</span>
-            <span class="cat-title">Body Care</span>
+            <div class="cat-icon">💇‍♀️</div>
+            <div class="cat-title">Hair Care</div>
         </div>
     </div>
 
-    <!-- شبكة المنتجات -->
-    <div class="products-grid" id="products-container"></div>
+    <div class="products-grid" id="product-grid">
+        <!-- المنتجات هتظهر هنا بالجافا سكريبت -->
+    </div>
 
     <script>
         const products = [
-            { 
-                id: 1, 
-                title: "كريم إيدين Care & More 🌸✨", 
-                category: "body", 
-                tag: "BODY CARE",
-                desc: "إيدك محتاجة ترطيب ونعومة طول اليوم؟ كريم ممتااااز جداً مغذي لليدين.",
-                price: 48, 
-                oldPrice: 70, 
-                discount: "OFF 31%", 
-                image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&q=80" 
-            },
-            { 
-                id: 2, 
-                title: "ماكينة براون Silk-épil 7 💜✨", 
-                category: "hair", 
-                tag: "HAIR REMOVAL",
-                desc: "انسي الحلاقة اليومية واستمتعي ببشرة ناعمة من أول استخدام 😍",
-                price: 6500, 
-                oldPrice: 8000, 
-                discount: "OFF 19%", 
-                image: "https://images.unsplash.com/photo-1608248597261-739343be1f49?w=500&q=80" 
-            },
-            { 
-                id: 3, 
-                title: "Leaves Hair Mask 🌿", 
-                category: "hair", 
-                tag: "HAIR CARE",
-                desc: "ماسك طبيعي لمعالجة هيشان الشعر وترطيبه من الجذور.",
-                price: 250, 
-                oldPrice: 300, 
-                discount: "OFF 17%", 
-                image: "FB_IMG_1786693730612.jpg"
-            },
-            { 
-                id: 4, 
-                title: "Ruska Hair Serum ✨", 
-                category: "skin", 
-                tag: "SKIN CARE",
-                desc: "سيروم مغذي ومصلح للبشرة وإعطائها نضارة فورية.",
-                price: 170, 
-                oldPrice: 220, 
-                discount: "OFF 23%", 
-                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&q=80" 
-            }
+            { id: 1, title: "كريم إيدين", category: "body", tag: "BODY CARE", desc: "كريم مرطب ومغذي لليدين.", price: 48, oldPrice: 70, discount: "OFF 31%", image: "FB_IMG_1786693730612.jpg" },
+            { id: 2, title: "ماكينة براون", category: "hair", tag: "HAIR REMOVAL", desc: "بشرة ناعمة من أول استخدام.", price: 6500, oldPrice: 8000, discount: "OFF 19%", image: "FB_IMG_1786693730612.jpg" }
         ];
 
-        let cart = [];
-
-        function displayProducts(items) {
-            const container = document.getElementById('products-container');
-            if (items.length === 0) {
-                container.innerHTML = '<p style="grid-column: span 2; text-align: center; color: #888; padding: 20px;">لا توجد منتجات</p>';
-                return;
-            }
-            container.innerHTML = items.map(product => `
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = items.map(p => `
                 <div class="product-card">
                     <div class="img-container">
-                        <span class="badge-discount">${product.discount}</span>
-                        <img src="${product.image}" alt="${product.title}" class="product-img">
+                        <img src="${p.image}" class="product-img">
+                        <div class="badge-discount">${p.discount}</div>
                     </div>
                     <div class="product-info">
-                        <span class="category-tag">${product.tag}</span>
-                        <div class="product-title">${product.title}</div>
-                        <div class="product-desc">${product.desc}</div>
+                        <div class="category-tag">${p.tag}</div>
+                        <div class="product-title">${p.title}</div>
+                        <div class="product-desc">${p.desc}</div>
                         <div class="price-container">
-                            <span class="current-price">${product.price} EGP</span>
-                            <span class="old-price">${product.oldPrice} EGP</span>
+                            <span class="current-price">EGP ${p.price}</span>
+                            <span class="old-price">EGP ${p.oldPrice}</span>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">🛒 Add to Cart</button>
+                        <button class="add-to-cart">Add to Cart</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function filterProducts(category, btn) {
-            document.querySelectorAll('.cat-card').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (category === 'all') {
-                displayProducts(products);
-            } else {
-                const filtered = products.filter(p => p.category === category);
-                displayProducts(filtered);
-            }
-        }
-
-        function searchProducts(query) {
-            const filtered = products.filter(p => p.title.toLowerCase().includes(query.toLowerCase()));
-            displayProducts(filtered);
-        }
-
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            cart.push(product);
-            document.getElementById('cart-count').innerText = cart.length;
-        }
-
-        function sendWhatsApp() {
-            if (cart.length === 0) {
-                alert("السلة فارغة!");
-                return;
-            }
-            let text = "مرحباً كاريزما، أريد طلب المنتجات التالية:\n";
-            cart.forEach((item, index) => {
-                text += `${index + 1}. ${item.title} - ${item.price} EGP\n`;
-            });
-            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-        }
-
-        displayProducts(products);
+        renderProducts(products);
     </script>
 </body>
 </html>
