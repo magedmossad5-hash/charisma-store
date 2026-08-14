@@ -3,77 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Charisma Store</title>
+  <title>Charisma Store - كاريزما ستور</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-    body { background-color: #121212; color: #fff; padding: 15px; }
-    h1 { text-align: center; margin-bottom: 20px; color: #ff2a74; font-size: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #121212; color: #fff; padding: 15px; padding-bottom: 90px; }
     
+    header { text-align: center; margin-bottom: 15px; }
+    header h1 { color: #ff2a74; font-size: 22px; margin-bottom: 10px; }
+    
+    /* الفئات */
+    .categories {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px;
+      scrollbar-width: none;
+    }
+    .categories::-webkit-scrollbar { display: none; }
+    .cat-btn {
+      background: #252525; color: #ccc; border: 1px solid #333; padding: 6px 14px;
+      border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer;
+    }
+    .cat-btn.active { background: #ff2a74; color: #fff; border-color: #ff2a74; font-weight: bold; }
+
+    /* شبكة المنتجات */
     .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-      max-width: 1000px;
-      margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;
     }
     
     .card {
-      background-color: #1e1e1e;
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid #2a2a2a;
+      background-color: #1e1e1e; border-radius: 12px; padding: 10px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      border: 1px solid #2a2a2a; overflow: hidden;
     }
     
-    .category {
-      color: #ff2a74;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 4px;
+    .card img {
+      width: 100%; height: 130px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;
+      background-color: #2a2a2a;
     }
     
-    .title {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
+    .category-label { color: #ff2a74; font-size: 10px; font-weight: bold; margin-bottom: 2px; }
+    .title { font-size: 13px; font-weight: bold; margin-bottom: 6px; line-height: 1.3; height: 34px; overflow: hidden; }
+    .sku { font-size: 10px; color: #777; margin-bottom: 8px; }
     
-    .btn {
-      background-color: #fff;
-      color: #000;
-      border: none;
-      padding: 8px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
+    .price-box { font-size: 14px; font-weight: bold; color: #00ff88; margin-bottom: 8px; }
+    
+    .btn-add {
+      background-color: #fff; color: #000; border: none; padding: 8px;
+      border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 12px;
+      width: 100%; transition: 0.2s;
     }
+    .btn-add:active { transform: scale(0.95); background-color: #ff2a74; color: #fff; }
+
+    /* سلة الشراء العائمة */
+    .cart-float {
+      position: fixed; bottom: 15px; left: 15px; right: 15px;
+      background: #ff2a74; color: #fff; padding: 12px 20px; border-radius: 30px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 8px 20px rgba(255, 42, 116, 0.4); font-weight: bold; font-size: 14px;
+      cursor: pointer; z-index: 1000;
+    }
+    .cart-count { background: #fff; color: #ff2a74; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
   </style>
 </head>
 <body>
 
-  <h1>كاريزما ستور - Charisma Store</h1>
+  <header>
+    <h1>كاريزما ستور - Charisma Store</h1>
+  </header>
+
+  <!-- قائمة الفئات -->
+  <div class="categories" id="categories-list">
+    <button class="cat-btn active" onclick="filterCategory('الكل')">الكل</button>
+  </div>
+
+  <!-- شبكة المنتجات -->
   <div class="grid-container" id="products-list"></div>
 
+  <!-- شريط السلة العائم -->
+  <div class="cart-float" onclick="openCart()">
+    <div>🛒 السلة (<span id="cart-count">0</span>)</div>
+    <div id="cart-total">إتمام الطلب ➔</div>
+  </div>
+
   <script>
+    let allProducts = [];
+    let cart = [];
+
+    // الصورة الافتراضية للمنتجات
+    const defaultImg = "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&q=80";
+
     fetch('products.json')
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('products-list');
-        container.innerHTML = data.map(item => `
-          <div class="card">
-            <div>
-              <div class="category">كود: ${item.id}</div>
-              <div class="title">${item.name}</div>
-            </div>
-            <button class="btn">🛒 إضافة للسلة</button>
-          </div>
+        allProducts = data;
+        renderCategories();
+        renderProducts(allProducts);
+      });
+
+    function renderCategories() {
+      const categories = ['الكل', ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+      const catContainer = document.getElementById('categories-list');
+      if (categories.length > 1) {
+        catContainer.innerHTML = categories.map((cat, i) => `
+          <button class="cat-btn ${i === 0 ? 'active' : ''}" onclick="filterCat(this, '${cat}')">${cat}</button>
         `).join('');
-      })
-      .catch(err => console.error('Error loading JSON:', err));
+      }
+    }
+
+    function filterCat(btn, category) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (category === 'الكل') {
+        renderProducts(allProducts);
+      } else {
+        renderProducts(allProducts.filter(p => p.category === category));
+      }
+    }
+
+    function renderProducts(products) {
+      const container = document.getElementById('products-list');
+      container.innerHTML = products.map(item => `
+        <div class="card">
+          <div>
+            <img src="${item.image || defaultImg}" alt="${item.name}">
+            <div class="category-label">${item.category || 'كاريزما'}</div>
+            <div class="title">${item.name}</div>
+            <div class="sku">كود: ${item.id}</div>
+          </div>
+          <div>
+            ${item.price ? `<div class="price-box">${item.price} ج.م</div>` : ''}
+            <button class="btn-add" onclick="addToCart('${item.id}', '${item.name}')">🛒 إضافة للسلة</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id, name) {
+      cart.push({ id, name });
+      document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    function openCart() {
+      if(cart.length === 0) {
+        alert("السلة فارغة حالياً!");
+      } else {
+        alert(`لديك ${cart.length} منتج في السلة.\nيمكن ربط هذه الخطوة بالواتساب إرسال الطلب تلقائياً!`);
+      }
+    }
   </script>
 </body>
 </html>
