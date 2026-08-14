@@ -8,10 +8,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #121212; color: #fff; padding: 15px; }
         
-        /* الهيدر */
+        /* الهيدر وزر السلة */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .logo { font-size: 26px; font-weight: 900; color: #e91e63; }
-        
+        .logo { font-size: 24px; font-weight: 900; color: #e91e63; }
+        .cart-btn-header { background: #e91e63; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
         /* مربع البحث */
         .search-input { width: 100%; padding: 14px; border-radius: 15px; border: none; background: #1e1e1e; color: #fff; font-size: 16px; margin-bottom: 15px; outline: none; border: 1px solid #333; }
         
@@ -36,12 +37,22 @@
         /* الأزرار */
         .btn-add { width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; background: #fff; color: #000; font-size: 14px; }
         .btn-wish { width: 100%; padding: 8px; border-radius: 8px; border: none; background: #2a2a2a; color: #fff; margin-top: 6px; cursor: pointer; font-size: 13px; }
+
+        /* نافذة السلة (Modal) */
+        .cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .cart-content { background: #1e1e1e; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; border: 1px solid #333; max-height: 80vh; overflow-y: auto; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: #282828; padding: 10px; border-radius: 8px; }
+        .close-btn { background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+        .checkout-btn { width: 100%; background: #25d366; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; }
+        .delete-btn { background: #e91e63; color: white; border: none; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Charisma Store ✨</div>
+        <button class="cart-btn-header" onclick="toggleCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
     </header>
     
     <input type="text" class="search-input" id="search" placeholder="ابحث عن المنتجات..." onkeyup="filterProducts()">
@@ -60,17 +71,32 @@
 
     <div class="product-grid" id="grid"></div>
 
+    <!-- نافذة السلة -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>سلة المشتريات 🛒</h3>
+                <button class="close-btn" onclick="toggleCartModal()">✕</button>
+            </div>
+            <div id="cart-items-list">
+                <!-- المنتجات في السلة بتظهر هنا -->
+            </div>
+            <div style="margin-top: 15px; text-align: left; font-weight: bold;" id="cart-total"></div>
+            <button class="checkout-btn" onclick="sendWhatsAppOrder()">إتمام الطلب عبر الواتساب 💬</button>
+        </div>
+    </div>
+
     <script>
         const myPhoneNumber = "201229044897";
+        let cart = [];
 
-        // المنتجات مع روابط صور حقيقية لتجربة الشكل مباشرة
         const products = [
             { 
                 id: 1, 
                 name: "Derma Ten Vitamin C Serum", 
                 cat: "العناية بالبشرة", 
                 desc: "سيرم فيتامين سي للنضارة وتفتيح التصبغات وآثار الحبوب ✨🍊", 
-                price: "210 ج.م",
+                price: 210,
                 img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400"
             },
             { 
@@ -78,7 +104,7 @@
                 name: "Derma Ten Hyaluronic Acid", 
                 cat: "العناية بالبشرة", 
                 desc: "سيرم الهيالورونيك لترطيب عميق وحماية من الجفاف 💧✨", 
-                price: "210 ج.م",
+                price: 210,
                 img: "https://images.unsplash.com/photo-1608248597260-50d268d83d16?w=400"
             },
             { 
@@ -86,7 +112,7 @@
                 name: "شامبو معالج للشعر", 
                 cat: "العناية بالشعر", 
                 desc: "لتغذية وإصلاح الشعر التالف وإعادة اللمعان ✨", 
-                price: "180 ج.م",
+                price: 180,
                 img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400"
             },
             { 
@@ -94,7 +120,7 @@
                 name: "جهاز براون سيلك ابيل", 
                 cat: "الأجهزة", 
                 desc: "جهاز العناية المتكامل والمريح للإزالة السريعة", 
-                price: "6500 ج.م",
+                price: 6500,
                 img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400"
             }
         ];
@@ -109,12 +135,68 @@
                         <div class="p-desc">${p.desc}</div>
                     </div>
                     <div>
-                        <div class="p-price">${p.price}</div>
-                        <button class="btn-add" onclick="order('${p.name}')">أضف للسلة 🛒</button>
+                        <div class="p-price">${p.price} ج.م</div>
+                        <button class="btn-add" onclick="addToCart(${p.id})">أضف للسلة 🛒</button>
                         <button class="btn-wish">المفضلة ♥</button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartList = document.getElementById('cart-items-list');
+            const totalBox = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartList.innerHTML = "<p style='text-align:center; color:#888;'>السلة فارغة حالياً</p>";
+                totalBox.innerText = "";
+                return;
+            }
+
+            let total = 0;
+            cartList.innerHTML = cart.map((p, index) => {
+                total += p.price;
+                return `
+                    <div class="cart-item">
+                        <div>
+                            <div><strong>${p.name}</strong></div>
+                            <div style="color:#e91e63; font-size:13px;">${p.price} ج.م</div>
+                        </div>
+                        <button class="delete-btn" onclick="removeFromCart(${index})">حذف</button>
+                    </div>
+                `;
+            }).join('');
+
+            totalBox.innerText = "الإجمالي: " + total + " ج.م";
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+            let itemsText = cart.map((p, index) => `${index + 1}- ${p.name} (${p.price} ج.م)`).join('%0A');
+            let total = cart.reduce((sum, p) => sum + p.price, 0);
+            let message = `مرحباً، أريد طلب المنتجات التالية:%0A${itemsText}%0A%0Aالإجمالي: ${total} ج.م`;
+
+            window.open(`https://wa.me/${myPhoneNumber}?text=${message}`);
         }
 
         function filterCat(cat, el) {
@@ -128,10 +210,6 @@
             const query = document.getElementById('search').value.toLowerCase();
             const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.desc.includes(query));
             render(filtered);
-        }
-
-        function order(name) {
-            window.open(`https://wa.me/${myPhoneNumber}?text=أريد طلب: ${name}`);
         }
 
         render(products);
