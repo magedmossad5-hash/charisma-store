@@ -3,62 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charisma Store</title>
+    <title>متجر كاريزما - Charisma Store</title>
     <style>
-        body { background-color: #121212; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #121212; color: #fff; padding: 15px; }
+        
+        /* الهيدر */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: 900; color: #e91e63; }
+        
+        /* الشبكة */
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .card { background-color: #1e1e1e; border-radius: 15px; padding: 10px; }
+        .img-box { width: 100%; height: 120px; background: #333; border-radius: 10px; margin-bottom: 10px; }
         
-        .card { background-color: #1e1e1e; border-radius: 15px; overflow: hidden; position: relative; padding: 10px; }
-        .badge { background: #e91e63; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; position: absolute; top: 10px; left: 10px; }
+        /* النصوص */
+        .p-name { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .p-desc { font-size: 12px; color: #aaa; margin-bottom: 10px; line-height: 1.4; }
+        .p-price { color: #e91e63; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
         
-        .img-placeholder { width: 100%; height: 150px; background: #333; border-radius: 10px; margin-bottom: 10px; }
-        
-        .product-name { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #fff; }
-        .product-desc { font-size: 13px; color: #aaa; margin-bottom: 10px; line-height: 1.4; }
-        
-        .price-box { display: flex; align-items: baseline; gap: 5px; margin-bottom: 10px; }
-        .price-new { font-size: 18px; font-weight: 900; color: #fff; }
-        .price-old { font-size: 14px; color: #777; text-decoration: line-through; }
-        
-        .btn-cart { background: white; color: black; border: none; padding: 8px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; }
+        /* الأزرار */
+        .btn-action { width: 100%; padding: 8px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 14px; }
+        .btn-add { background: white; color: black; }
+        .btn-wish { background: #333; color: white; }
     </style>
 </head>
 <body>
 
+    <header>
+        <div class="logo">كاريزما✨</div>
+    </header>
+
     <div class="product-grid" id="grid">
-        <!-- الكود بيضيف المنتجات هنا -->
+        <!-- المنتجات -->
     </div>
 
     <script>
         const myPhoneNumber = "201229044897"; // ضعي رقمك هنا
 
         const products = [
-            {
-                name: "Derma Ten Glowing Power Vitamin C Serum",
-                desc: "لو بشرتك باهتة أو فيها تصبغات وآثار حبوب... السيرم ده هيخليها أفتح وأنضر بشكل ملحوظ ✨🍊",
-                priceNew: "210 EGP",
-                priceOld: "285 EGP"
-            },
-            {
-                name: "Derma Ten Hydra Power Serum",
-                desc: "لو بشرتك جافة أو محتاجة ترطيب قوي... السيرم ده هيخليها تشرب ميه حرفياً 💧✨",
-                priceNew: "210 EGP",
-                priceOld: "285 EGP"
-            }
+            { name: "سيرم فيتامين سي", desc: "لو بشرتك باهتة... السيرم ده هيخليها أنضر بشكل ملحوظ ✨🍊", price: "210 ج.م" },
+            { name: "سيرم الهيالورونيك", desc: "لو بشرتك جافة أو محتاجة ترطيب... السيرم ده هيخليها تشرب ميه 💧✨", price: "210 ج.م" }
         ];
 
         const grid = document.getElementById('grid');
         grid.innerHTML = products.map(p => `
             <div class="card">
-                <div class="badge">OFF 26%</div>
-                <div class="img-placeholder"></div>
-                <div class="product-name">${p.name}</div>
-                <div class="product-desc">${p.desc}</div>
-                <div class="price-box">
-                    <span class="price-new">${p.priceNew}</span>
-                    <span class="price-old">${p.priceOld}</span>
-                </div>
-                <button class="btn-cart" onclick="sendWhatsApp('${p.name}')">🛒 Add to Cart</button>
+                <div class="img-box"></div>
+                <div class="p-name">${p.name}</div>
+                <div class="p-desc">${p.desc}</div>
+                <div class="p-price">${p.price}</div>
+                <button class="btn-action btn-add" onclick="sendWhatsApp('${p.name}')">أضف للسلة</button>
+                <button class="btn-action btn-wish">المفضلة</button>
             </div>
         `).join('');
 
