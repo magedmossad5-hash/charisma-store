@@ -3,330 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charisma Store</title>
+    <title>Charisma - كاريزما</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 15px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .logo {
-            color: #ff2a75;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .cart-btn {
-            background-color: #ff2a75;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .product-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-        .product-img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 8px;
-            background-color: #2a2a2a;
-        }
-        .discount-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #ff2a75;
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        .product-title {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin: 8px 0 4px;
-        }
-        .price-container {
-            margin-bottom: 8px;
-        }
-        .current-price {
-            font-weight: bold;
-            color: #fff;
-            font-size: 0.95rem;
-        }
-        .old-price {
-            text-decoration: line-through;
-            color: #888;
-            font-size: 0.8rem;
-            margin-right: 5px;
-        }
-        .add-btn {
-            background-color: #25d366;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #121212; color: #ffffff; padding: 15px; padding-bottom: 80px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo { font-size: 22px; font-weight: bold; color: #e91e63; letter-spacing: 1px; }
+        .cart-btn { background-color: #e91e63; color: white; padding: 8px 16px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; }
+        
+        .search-box { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #333; background-color: #1e1e1e; color: white; margin-bottom: 15px; outline: none; }
+        
+        .categories { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .cat-btn { background-color: #1e1e1e; color: #fff; border: 1px solid #333; padding: 8px 16px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+        .cat-btn.active { border-color: #e91e63; color: #e91e63; background-color: #2a1b22; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .product-card { background-color: #1e1e1e; border-radius: 16px; padding: 10px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .badge-discount { position: absolute; top: 15px; right: 15px; background-color: #e91e63; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; z-index: 2; }
+        .product-img { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background-color: #2a2a2a; }
+        
+        .product-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .price-container { margin-top: 8px; }
+        .current-price { font-size: 15px; font-weight: bold; color: #fff; }
+        .old-price { font-size: 12px; color: #888; text-decoration: line-through; margin-right: 5px; }
+        
+        .add-to-cart { margin-top: 10px; background-color: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">✨ Charisma</div>
-        <button class="cart-btn">السلة (0)</button>
+    <header>
+        <button class="cart-btn" onclick="sendWhatsApp()">السلة (<span id="cart-count">0</span>)</button>
+        <div class="logo">Charisma ✨</div>
+    </header>
+
+    <input type="text" class="search-box" placeholder="بحث عن منتج في كاريزما..." onkeyup="searchProducts(this.value)">
+
+    <div class="categories">
+        <button class="cat-btn active" onclick="filterProducts('all', this)">الكل</button>
+        <button class="cat-btn" onclick="filterProducts('skin', this)">عناية بالبشرة</button>
+        <button class="cat-btn" onclick="filterProducts('makeup', this)">مكياج</button>
+        <button class="cat-btn" onclick="filterProducts('hair', this)">عناية بالشعر</button>
     </div>
 
-    <div class="products-grid">
-        
-        <!-- منتج 1 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 23%</span>
-            <img src="https://via.placeholder.com/300x300?text=Ruska+Serum" alt="Ruska Hair Serum" class="product-img">
-            <div>
-                <div class="product-title">Ruska Hair Serum</div>
-                <div class="price-container">
-                    <span class="current-price">170 ج.م</span>
-                    <span class="old-price">220 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
+    <div class="products-grid" id="products-container"></div>
 
-        <!-- منتج 2 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 17%</span>
-            <img src="https://via.placeholder.com/300x300?text=Leaves+Mask" alt="Leaves Hair Mask" class="product-img">
-            <div>
-                <div class="product-title">Leaves Hair Mask</div>
-                <div class="price-container">
-                    <span class="current-price">250 ج.م</span>
-                    <span class="old-price">300 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
+    <script>
+        const products = [
+            { id: 1, title: "Leaves Hair Mask", category: "hair", price: 250, oldPrice: 300, discount: "17%", image: "https://dummyimage.com/300x300/1e1e1e/fff&text=Leaves+Mask" },
+            { id: 2, title: "Ruska Hair Serum", category: "skin", price: 170, oldPrice: 220, discount: "23%", image: "https://dummyimage.com/300x300/1e1e1e/fff&text=Ruska+Serum" },
+            { id: 3, title: "سكينونا سيروم بشرة", category: "skin", price: 200, oldPrice: 300, discount: "33%", image: "https://dummyimage.com/300x300/1e1e1e/fff&text=Skinona" },
+            { id: 4, title: "ستارفيل غسول وايتنج", category: "skin", price: 135, oldPrice: 200, discount: "33%", image: "https://dummyimage.com/300x300/1e1e1e/fff&text=Starville" }
+        ];
 
-        <!-- منتج 3 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 33%</span>
-            <img src="https://via.placeholder.com/300x300?text=Starville" alt="ستارفيل غسول" class="product-img">
-            <div>
-                <div class="product-title">ستارفيل غسول وايتنج</div>
-                <div class="price-container">
-                    <span class="current-price">135 ج.م</span>
-                    <span class="old-price">200 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
+        let cart = [];
 
-        <!-- منتج 4 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 33%</span>
-            <img src="https://via.placeholder.com/300x300?text=Skinona" alt="سكينونا سيروم" class="product-img">
-            <div>
-                <div class="product-title">سكينونا سيروم بشرة</div>
-                <div class="price-container">
-                    <span class="current-price">200 ج.م</span>
-                    <span class="old-price">300 ج.م</span>
+        function displayProducts(items) {
+            const container = document.getElementById('products-container');
+            if (items.length === 0) {
+                container.innerHTML = '<p style="grid-column: span 2; text-align: center; color: #888; padding: 20px;">لا توجد منتجات متطابقة</p>';
+                return;
+            }
+            container.innerHTML = items.map(product => `
+                <div class="product-card">
+                    <span class="badge-discount">خصم ${product.discount}</span>
+                    <img src="${product.image}" alt="${product.title}" class="product-img">
+                    <div class="product-title">${product.title}</div>
+                    <div class="price-container">
+                        <span class="current-price">${product.price} ج.م</span>
+                        <span class="old-price">${product.oldPrice} ج.م</span>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">إضافة للسلة 🛒</button>
                 </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
+            `).join('');
+        }
 
-    </div>
+        function filterProducts(category, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (category === 'all') {
+                displayProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                displayProducts(filtered);
+            }
+        }
+
+        function searchProducts(query) {
+            const filtered = products.filter(p => p.title.toLowerCase().includes(query.toLowerCase()));
+            displayProducts(filtered);
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        function sendWhatsApp() {
+            if (cart.length === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+            let text = "مرحباً كاريزما، أريد طلب المنتجات التالية:\n";
+            cart.forEach((item, index) => {
+                text += `${index + 1}. ${item.title} - ${item.price} ج.م\n`;
+            });
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        displayProducts(products);
+    </script>
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charisma Store</title>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 15px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .logo {
-            color: #ff2a75;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .cart-btn {
-            background-color: #ff2a75;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .product-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-        .product-img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 8px;
-            background-color: #2a2a2a;
-        }
-        .discount-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #ff2a75;
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        .product-title {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin: 8px 0 4px;
-        }
-        .price-container {
-            margin-bottom: 8px;
-        }
-        .current-price {
-            font-weight: bold;
-            color: #fff;
-            font-size: 0.95rem;
-        }
-        .old-price {
-            text-decoration: line-through;
-            color: #888;
-            font-size: 0.8rem;
-            margin-right: 5px;
-        }
-        .add-btn {
-            background-color: #25d366;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-    </style>
-</head>
-<body>
 
-    <div class="header">
-        <div class="logo">✨ Charisma</div>
-        <button class="cart-btn">السلة (0)</button>
-    </div>
-
-    <div class="products-grid">
-        
-        <!-- منتج 1 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 23%</span>
-            <img src="https://via.placeholder.com/300x300?text=Ruska+Serum" alt="Ruska Hair Serum" class="product-img">
-            <div>
-                <div class="product-title">Ruska Hair Serum</div>
-                <div class="price-container">
-                    <span class="current-price">170 ج.م</span>
-                    <span class="old-price">220 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
-
-        <!-- منتج 2 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 17%</span>
-            <img src="https://via.placeholder.com/300x300?text=Leaves+Mask" alt="Leaves Hair Mask" class="product-img">
-            <div>
-                <div class="product-title">Leaves Hair Mask</div>
-                <div class="price-container">
-                    <span class="current-price">250 ج.م</span>
-                    <span class="old-price">300 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
-
-        <!-- منتج 3 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 33%</span>
-            <img src="https://via.placeholder.com/300x300?text=Starville" alt="ستارفيل غسول" class="product-img">
-            <div>
-                <div class="product-title">ستارفيل غسول وايتنج</div>
-                <div class="price-container">
-                    <span class="current-price">135 ج.م</span>
-                    <span class="old-price">200 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
-
-        <!-- منتج 4 -->
-        <div class="product-card">
-            <span class="discount-tag">خصم 33%</span>
-            <img src="https://via.placeholder.com/300x300?text=Skinona" alt="سكينونا سيروم" class="product-img">
-            <div>
-                <div class="product-title">سكينونا سيروم بشرة</div>
-                <div class="price-container">
-                    <span class="current-price">200 ج.م</span>
-                    <span class="old-price">300 ج.م</span>
-                </div>
-            </div>
-            <button class="add-btn">إضافة للسلة 🛒</button>
-        </div>
-
-    </div>
-
-</body>
-</html>
