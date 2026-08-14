@@ -1,109 +1,70 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charisma Store</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background-color: #0d0d0d; color: #ffffff; padding: 15px; }
+        body { background-color: #121212; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 28px; font-weight: 900; }
-        .logo span { color: #e91e63; }
+        .card { background-color: #1e1e1e; border-radius: 15px; overflow: hidden; position: relative; padding: 10px; }
+        .badge { background: #e91e63; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; position: absolute; top: 10px; left: 10px; }
         
-        .lang-btn { background: #333; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-size: 16px; }
-        .cart-btn { background-color: #e91e63; color: white; padding: 8px 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; }
-
-        .page-title { font-size: 32px; font-weight: 900; margin-bottom: 15px; }
-        .search-box { width: 100%; padding: 15px; border-radius: 20px; border: none; background-color: #1a1a1a; color: #fff; margin-bottom: 20px; font-size: 18px; }
-
-        .categories-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; }
-        .cat-card { min-width: 100px; background-color: #1a1a1a; border: 2px solid #333; border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; }
-        .cat-name { font-size: 16px; font-weight: bold; margin-top: 5px; }
-
-        .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .product-card { background-color: #161616; border-radius: 20px; padding: 12px; }
-        .product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; background: #333; }
-        .product-title { font-size: 20px; font-weight: bold; margin: 10px 0; }
-        .price { font-size: 20px; color: #e91e63; font-weight: 900; margin-bottom: 10px; }
-        .add-btn { width: 100%; background: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .img-placeholder { width: 100%; height: 150px; background: #333; border-radius: 10px; margin-bottom: 10px; }
+        
+        .product-name { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #fff; }
+        .product-desc { font-size: 13px; color: #aaa; margin-bottom: 10px; line-height: 1.4; }
+        
+        .price-box { display: flex; align-items: baseline; gap: 5px; margin-bottom: 10px; }
+        .price-new { font-size: 18px; font-weight: 900; color: #fff; }
+        .price-old { font-size: 14px; color: #777; text-decoration: line-through; }
+        
+        .btn-cart { background: white; color: black; border: none; padding: 8px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Charisma<span>✨</span></div>
-        <div>
-            <button class="lang-btn" onclick="toggleLang()">العربية / EN</button>
-            <button class="cart-btn" onclick="sendWhatsApp()" data-i18n="cart">Cart (0)</button>
-        </div>
-    </header>
-
-    <h1 class="page-title" data-i18n="all_products">All Products</h1>
-    <input type="text" class="search-box" data-i18n="search" placeholder="Search...">
-
-    <div class="categories-container" id="cats">
-        <!-- الأقسام هتظهر هنا -->
-    </div>
-
-    <div class="products-grid" id="grid">
-        <!-- المنتجات هتظهر هنا -->
+    <div class="product-grid" id="grid">
+        <!-- الكود بيضيف المنتجات هنا -->
     </div>
 
     <script>
-        const myPhoneNumber = "201229044897"; 
-        let cart = [];
-        let currentLang = 'en';
+        const myPhoneNumber = "201229044897"; // ضعي رقمك هنا
 
-        const categories = ["All", "Skin Care", "Body Care", "Hair Care", "Devices", "Accessories", "Makeup", "Perfumes"];
         const products = [
-            { id: 1, title: "Starville Wash", cat: "Skin Care", price: 150, img: "FB_IMG_1786693730612.jpg" },
-            { id: 2, title: "Braun Silk", cat: "Devices", price: 6500, img: "FB_IMG_1786693730612.jpg" }
+            {
+                name: "Derma Ten Glowing Power Vitamin C Serum",
+                desc: "لو بشرتك باهتة أو فيها تصبغات وآثار حبوب... السيرم ده هيخليها أفتح وأنضر بشكل ملحوظ ✨🍊",
+                priceNew: "210 EGP",
+                priceOld: "285 EGP"
+            },
+            {
+                name: "Derma Ten Hydra Power Serum",
+                desc: "لو بشرتك جافة أو محتاجة ترطيب قوي... السيرم ده هيخليها تشرب ميه حرفياً 💧✨",
+                priceNew: "210 EGP",
+                priceOld: "285 EGP"
+            }
         ];
 
-        // تهيئة الأقسام
-        const catContainer = document.getElementById('cats');
-        catContainer.innerHTML = categories.map(c => `
-            <div class="cat-card" onclick="filter('${c}')"><div class="cat-name">${c}</div></div>
+        const grid = document.getElementById('grid');
+        grid.innerHTML = products.map(p => `
+            <div class="card">
+                <div class="badge">OFF 26%</div>
+                <div class="img-placeholder"></div>
+                <div class="product-name">${p.name}</div>
+                <div class="product-desc">${p.desc}</div>
+                <div class="price-box">
+                    <span class="price-new">${p.priceNew}</span>
+                    <span class="price-old">${p.priceOld}</span>
+                </div>
+                <button class="btn-cart" onclick="sendWhatsApp('${p.name}')">🛒 Add to Cart</button>
+            </div>
         `).join('');
 
-        function toggleLang() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            // تحديث نصوص بسيطة للترجمة
-            location.reload(); // عشان ميتعبكش في البرمجة، ريلود بسيط يغير اللغة
+        function sendWhatsApp(productName) {
+            window.open(`https://wa.me/${myPhoneNumber}?text=أريد طلب: ${productName}`);
         }
-
-        function filter(cat) {
-            const filtered = cat === 'All' ? products : products.filter(p => p.cat === cat);
-            render(filtered);
-        }
-
-        function render(items) {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = items.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}" class="product-img">
-                    <div class="product-title">${p.title}</div>
-                    <div class="price">EGP ${p.price}</div>
-                    <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(id) {
-            const p = products.find(prod => prod.id === id);
-            cart.push(p);
-            alert(p.title + " Added!");
-        }
-
-        function sendWhatsApp() {
-            if(cart.length === 0) return alert("Cart Empty!");
-            window.open(`https://wa.me/${myPhoneNumber}?text=Order: ${cart.map(p=>p.title).join(', ')}`);
-        }
-
-        render(products);
     </script>
 </body>
 </html>
