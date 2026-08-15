@@ -118,7 +118,6 @@
 <body>
 
   <header>
-    <!-- تأكد من تسمية صورة اللوجو باسم logo.jpg ووضعها في نفس مجلد الملف -->
     <img src="logo.jpg" alt="كاريزما لمستحضرات التجميل" class="store-logo-img" onerror="this.src='https://via.placeholder.com/90?text=Charisma'">
     
     <h1>كاريزما لمستحضرات التجميل</h1>
@@ -177,9 +176,9 @@
       })
       .catch(err => {
         const sampleData = [
-          { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, image: "", category: "سكين كير" },
-          { id: "102", name: "شامبو للشعر الجاف", price: 95, image: "", category: "هير كير" },
-          { id: "103", name: "برسيل جل للملابس", price: 120, image: "", category: "منظفات" }
+          { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, category: "سكين كير" },
+          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير" },
+          { id: "103", name: "برسيل جل للملابس", price: 120, category: "منظفات" }
         ];
         processProducts(sampleData);
       });
@@ -239,10 +238,13 @@
           `;
         }
 
+        // جلب الصورة تلقائياً باسم الكود (أو الرابط الموجود في الـ JSON إن وجد، أو الأيقونة الافتراضية)
+        let imgSrc = (item.image && item.image.trim() !== "") ? item.image : `${item.id}.jpg`;
+
         return `
           <div class="card">
             <div>
-              ${item.image ? `<img src="${item.image}" alt="${item.name}" class="product-img">` : `<div class="product-img" style="display:flex;align-items:center;justify-content:center;color:#444;">📦</div>`}
+              <img src="${imgSrc}" alt="${item.name}" class="product-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><text x=\'50%\' y=\'50%\' font-size=\'30\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#444\'>📦</text></svg>';">
               <div class="category-label">${item.category}</div>
               <div class="title">${item.name}</div>
               <div class="sku">كود: ${item.id}</div>
