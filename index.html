@@ -3,22 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Charisma Store - كاريزما ستور</title>
+  <title>كاريزما لمستحضرات التجميل - طنطا</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: #121212; color: #fff; padding: 15px; }
     
-    /* الهيدر واللوجو الجمالي */
+    /* الهيدر بتصميم نظيف يظهر اللوجو والعنوان بدقة */
     header { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; text-align: center; }
-    .store-logo {
-      width: 70px; height: 70px; background: linear-gradient(135deg, #ff2a74, #ff5e9c);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 32px; box-shadow: 0 5px 20px rgba(255, 42, 116, 0.4); margin-bottom: 10px;
-    }
-    header h1 { color: #ff2a74; font-size: 22px; font-weight: bold; margin-bottom: 5px; }
-    .store-subtitle { color: #888; font-size: 12px; margin-bottom: 15px; }
     
-    .top-bar { display: flex; width: 100%; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .store-logo-img {
+      width: 90px; height: 90px; object-fit: cover;
+      border-radius: 50%; border: 2px solid #ff2a74;
+      box-shadow: 0 4px 15px rgba(255, 42, 116, 0.4); margin-bottom: 10px;
+    }
+    
+    header h1 { color: #ff2a74; font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    
+    .store-info {
+      font-size: 12px; color: #aaa; line-height: 1.6; margin-bottom: 12px;
+    }
+    .store-info span { display: block; }
+
+    .top-bar { display: flex; width: 100%; justify-content: space-between; align-items: center; border-top: 1px solid #222; padding-top: 12px; }
+    
     .cart-btn-top {
       background: #ff2a74; color: #fff; border: none; padding: 8px 18px;
       border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px;
@@ -111,11 +118,18 @@
 <body>
 
   <header>
-    <div class="store-logo">✨</div>
-    <h1>كاريزما ستور</h1>
-    <div class="store-subtitle">أفضل المنتجات والعروض المميزة</div>
+    <!-- تأكد من تسمية صورة اللوجو باسم logo.jpg ووضعها في نفس مجلد الملف -->
+    <img src="logo.jpg" alt="كاريزما لمستحضرات التجميل" class="store-logo-img" onerror="this.src='https://via.placeholder.com/90?text=Charisma'">
+    
+    <h1>كاريزما لمستحضرات التجميل</h1>
+    
+    <div class="store-info">
+      <span>📍 طنطا - شارع طه الحكيم - أمام مستشفى الحميات</span>
+      <span>📞 تليفون / واتساب: <a href="tel:01229044897" style="color:#ff2a74; text-decoration:none;">01229044897</a></span>
+    </div>
+
     <div class="top-bar">
-      <span style="font-size: 13px; color: #aaa;">تسوق الأن</span>
+      <span style="font-size: 13px; color: #25d366; font-weight: bold;">✨ أهلاً بك، تسوق الآن</span>
       <button class="cart-btn-top" onclick="openCart()">🛒 السلة (<span id="cart-count">0</span>)</button>
     </div>
   </header>
@@ -156,14 +170,12 @@
       return 'اكسسوار واجهزة';
     }
 
-    // محاولة جلب المنتجات من products.json أو استخدام عينة تجريبية افتراضية في حال عدم توفره مؤقتاً
     fetch('products.json')
       .then(res => res.json())
       .then(data => {
         processProducts(data);
       })
       .catch(err => {
-        // عينة تجريبية للتأكد من عمل الصفحة فوراً
         const sampleData = [
           { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, image: "", category: "سكين كير" },
           { id: "102", name: "شامبو للشعر الجاف", price: 95, image: "", category: "هير كير" },
@@ -305,7 +317,7 @@
         return;
       }
       let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      let message = "مرحباً كاريزما ستور، أريد طلب المنتجات التالية:%0a%0a";
+      let message = "مرحباً كاريزما لمستحضرات التجميل، أريد طلب المنتجات التالية:%0a%0a";
       cart.forEach((item, index) => {
         message += `${index + 1}- ${item.name} (كود: ${item.id}) × ${item.qty} ${item.price > 0 ? '- ' + (item.price * item.qty) + ' ج.م' : ''}%0a`;
       });
