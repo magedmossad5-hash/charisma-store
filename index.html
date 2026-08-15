@@ -128,7 +128,7 @@
       if (/(صن بلوك|غسول|كريم|لوشن|ماسك|بشرة|سكين|تفتيح|مرطب|بودرة للوجه|ايس كريم|جيل|بيبي|مزيل)/.test(name)) return 'سكين كير';
       if (/(عطر|سبلاش|برفان|مسك|بادي|معطر)/.test(name)) return 'بارفان سبلاش مزيلات';
       if (/(مكياج|روج|فاونديشن|بودرة|ماسكارا|شادو)/.test(name)) return 'مكياج';
-      return 'اكسسوارات واجهزة';
+      return 'اكسسوار واجهزة';
     }
 
     fetch('products.json')
@@ -144,7 +144,7 @@
       });
 
     function renderCategories() {
-      const cats = ['الكل', 'سكين كير', 'هير كير', 'منظفات', 'ورقيات', 'صابون', 'بارفان سبلاش مزيلات', 'مكياج', 'اكسسوارات واجهزة'];
+      const cats = ['الكل', 'سكين كير', 'هير كير', 'منظفات', 'ورقيات', 'صابون', 'بارفان سبلاش مزيلات', 'مكياج', 'اكسسوار واجهزة'];
       const catContainer = document.getElementById('categories-list');
       catContainer.innerHTML = cats.map(c => `
         <button class="cat-btn ${c === 'الكل' ? 'active' : ''}" onclick="selectCat(this, '${c}')">${c}</button>
