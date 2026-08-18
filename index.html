@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-lang-ar="كاريزما لمستحضرات التجميل - طنطا" data-lang-en="Charisma Cosmetics - Tanta">كاريزما لمستحضرات التجميل - طنطا</title>
+  <title data-lang-ar="كاريزما لمستحضرات التجميل - طنطا - شارع طه الحكيم - أمام مستشفى الحميات" data-lang-en="Charisma Cosmetics - Tanta - Taha El-Hakim St.">كاريزما لمستحضرات التجميل - طنطا - شارع طه الحكيم - أمام مستشفى الحميات</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: #121212; color: #fff; padding: 15px; overflow-x: hidden; }
@@ -19,8 +19,8 @@
       animation: tickerMove 18s linear infinite;
     }
     @keyframes tickerMove {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     #splash-screen {
@@ -52,7 +52,7 @@
     .lang-btn { background: #252525; color: #fff; border: 1px solid #444; padding: 6px 14px; border-radius: 15px; font-size: 13px; font-weight: bold; cursor: pointer; }
     .brand-container { display: flex; align-items: center; gap: 10px; }
     .nav-logo-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #ff2a74; }
-    .brand-name { font-weight: bold; font-size: 17px; color: #ff2a74; }
+    .brand-name { font-weight: bold; font-size: 15px; color: #ff2a74; text-align: right; line-height: 1.3; }
     .cart-btn-top { background: #ff2a74; color: #fff; border: none; padding: 7px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 5px; }
 
     .hero-section {
@@ -234,7 +234,7 @@
     <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">English 🌐</button>
     <div class="brand-container">
       <img src="logo.jpg" alt="Logo" class="nav-logo-img" onerror="this.style.display='none'">
-      <span class="brand-name" id="brand-title-text">كاريزما</span>
+      <span class="brand-name" id="brand-title-text">كاريزما لمستحضرات التجميل<br><span style="font-size: 11px; color: #aaa; font-weight: normal;">طنطا - شارع طه الحكيم - أمام مستشفى الحميات</span></span>
     </div>
     <button class="cart-btn-top" onclick="openCart()">🛒 <span id="cart-count">0</span></button>
   </div>
@@ -423,7 +423,7 @@
       ar: {
         htmlLang: 'ar', htmlDir: 'rtl',
         langBtn: 'English 🌐',
-        brandName: 'كاريزما',
+        brandNameHtml: 'كاريزما لمستحضرات التجميل<br><span style="font-size: 11px; color: #aaa; font-weight: normal;">طنطا - شارع طه الحكيم - أمام مستشفى الحميات</span>',
         tickerText: '🔥 عروض حصرية لفترة محدودة - توصيل سريع لجميع مناطق طنطا والمحافظات - اطلبي الآن واحصلي على خصومات كاريزما المميزة! 🚚✨',
         heroBadge: '✨ تألقي بثقة',
         heroTitle: 'منتجات العناية والجمال <span>تُوصل لبابك</span>',
@@ -459,7 +459,7 @@
       en: {
         htmlLang: 'en', htmlDir: 'ltr',
         langBtn: 'عربي 🌐',
-        brandName: 'Charisma',
+        brandNameHtml: 'Charisma Cosmetics<br><span style="font-size: 11px; color: #aaa; font-weight: normal;">Tanta - Taha El-Hakim St.</span>',
         tickerText: '🔥 Exclusive Limited-Time Offers - Fast Delivery across Tanta & All Cities - Order Now! 🚚✨',
         heroBadge: '✨ Glow with Confidence',
         heroTitle: 'Beauty & Care Products <span>Delivered to You</span>',
@@ -501,7 +501,7 @@
       document.getElementById('html-root').setAttribute('lang', t.htmlLang);
       document.getElementById('html-root').setAttribute('dir', t.htmlDir);
       document.getElementById('lang-toggle-btn').innerText = t.langBtn;
-      document.getElementById('brand-title-text').innerText = t.brandName;
+      document.getElementById('brand-title-text').innerHTML = t.brandNameHtml;
       document.getElementById('ticker-text-content').innerText = t.tickerText;
       document.getElementById('hero-badge-text').innerText = t.heroBadge;
       document.getElementById('hero-title-text').innerHTML = t.heroTitle;
@@ -762,7 +762,6 @@
       toggleCustomDropdown();
     }
 
-    // إغلاق القائمة المنسدلة عند الضغط خارجها
     window.addEventListener('click', function(e) {
       if (!e.target.closest('.custom-dropdown-wrapper')) {
         const list = document.getElementById('dropdown-options-list');
@@ -884,7 +883,7 @@
       }
 
       let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      let message = `✨ *طلب جديد من متجر كاريزما* ✨%0a%0a`;
+      let message = `✨ *طلب جديد من متجر كاريزما (طنطا - شارع طه الحكيم)* ✨%0a%0a`;
       message += `👤 *الاسم:* ${name}%0a`;
       message += `📞 *الهاتف:* ${phone}%0a`;
       message += `🏙️ *المدينة:* ${city}%0a`;
