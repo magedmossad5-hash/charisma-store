@@ -85,8 +85,10 @@
     .card:hover { border-color: #ff2a7455; }
     .product-img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background-color: #252525; cursor: pointer; }
     .category-label { color: #ff2a74; font-size: 10px; font-weight: bold; margin-bottom: 3px; }
-    .title { font-size: 13px; font-weight: bold; margin-bottom: 6px; line-height: 1.3; height: 36px; overflow: hidden; cursor: pointer; }
+    .title { font-size: 13px; font-weight: bold; margin-bottom: 4px; line-height: 1.3; height: 36px; overflow: hidden; cursor: pointer; }
     .title:hover { color: #ff2a74; }
+    .detail-hint { font-size: 10px; color: #ff2a74; margin-bottom: 6px; cursor: pointer; opacity: 0.85; }
+    .detail-hint:hover { opacity: 1; text-decoration: underline; }
     .sku { font-size: 10px; color: #777; margin-bottom: 6px; }
     .price-tag { font-size: 13px; font-weight: bold; color: #25d366; margin-bottom: 10px; }
     
@@ -231,7 +233,7 @@
   <!-- شبكة المنتجات -->
   <div class="grid-container" id="products-list"></div>
 
-  <!-- نافذة تفاصيل المنتج المضافة حديثاً -->
+  <!-- نافذة تفاصيل المنتج -->
   <div class="modal-overlay" id="product-detail-modal">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
       <div class="modal-header">
@@ -269,7 +271,7 @@
     </div>
   </div>
 
-  <!-- نافذة إتمام الطلب الإبداعية الفاخرة -->
+  <!-- نافذة إتمام الطلب -->
   <div class="modal-overlay" id="checkout-modal">
     <div class="modal-content" style="max-width: 460px;">
       <div class="modal-header">
@@ -356,6 +358,7 @@
         emptyCart: 'السلة فارغة حالياً',
         addCartBtn: '🛒 إضافة للسلة',
         codeText: 'كود: ',
+        detailHint: '🔍 اضغط للتفاصيل والمواصفات',
         checkoutTitle: '🚀 تأكيد الطلب السريع',
         itemsCountText: 'عدد الأصناف المختارة',
         totalLabel: 'إجمالي قيمة المنتجات',
@@ -389,6 +392,7 @@
         emptyCart: 'Cart is empty',
         addCartBtn: '🛒 Add to Cart',
         codeText: 'SKU: ',
+        detailHint: '🔍 Tap for details',
         checkoutTitle: '🚀 Express Order Confirmation',
         itemsCountText: 'Selected Items',
         totalLabel: 'Total Products Value',
@@ -470,10 +474,10 @@
       .then(data => processProducts(data))
       .catch(err => {
         const sampleData = [
-          { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, category: "سكين كير" },
-          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير" },
-          { id: "103", name: "برسيل جل للملابس", price: 120, category: "منظفات" },
-          { id: "104", name: "مجموعة مكياج متكاملة", price: 350, category: "مكياج" }
+          { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, category: "سكين كير", description: "غسول مثالي لإزالة الدهون وتنظيف المسام بعمق." },
+          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير", description: "شامبو مغذي يرطب الشعر ويقلل من التقصف." },
+          { id: "103", name: "برسيل جل للملابس", price: 120, category: "منظفات", description: "جل غسيل قوي لإزالة البقع الصعبة والحفاظ على الألوان." },
+          { id: "104", name: "مجموعة مكياج متكاملة", price: 350, category: "مكياج", description: "مجموعة أساسية لإطلالة عصرية ومتألقة طوال اليوم." }
         ];
         processProducts(sampleData);
       });
@@ -570,9 +574,12 @@
         return `
           <div class="card">
             <div>
-              <img src="${imgSrc}" alt="${item.name}" class="product-img" onclick="openProductDetail('${item.id}')" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><text x=\'50%\' y=\'50%\' font-size=\'30\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#444\'>📦</text></svg>';">
+              <div onclick="openProductDetail('${item.id}')" style="cursor: pointer;">
+                <img src="${imgSrc}" alt="${item.name}" class="product-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><text x=\'50%\' y=\'50%\' font-size=\'30\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#444\'>📦</text></svg>';">
+              </div>
               <div class="category-label">${item.category}</div>
               <div class="title" onclick="openProductDetail('${item.id}')">${item.name}</div>
+              <div class="detail-hint" onclick="openProductDetail('${item.id}')">${t.detailHint}</div>
               <div class="sku">${t.codeText}${item.id}</div>
               <div class="price-tag">${item.price > 0 ? item.price + ' ج.م' : 'حسب الكمية'}</div>
             </div>
@@ -582,7 +589,6 @@
       }).join('');
     }
 
-    // دوال عرض وتفاصيل المنتج المنبثقة
     function openProductDetail(id) {
       const product = allProducts.find(p => p.id === id);
       if (!product) return;
