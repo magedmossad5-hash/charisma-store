@@ -117,7 +117,6 @@
     .title { font-size: 14px; font-weight: bold; margin-bottom: 6px; line-height: 1.4; height: 40px; overflow: hidden; cursor: pointer; }
     .title:hover { color: #ff2a74; }
     
-    /* تلوين الكلمات المطابقة للبحث */
     mark { background-color: rgba(255, 42, 116, 0.4); color: #fff; padding: 0 2px; border-radius: 3px; }
 
     .detail-hint { 
@@ -130,9 +129,19 @@
     .sku { font-size: 11px; color: #888; margin-bottom: 6px; }
     .price-tag { font-size: 15px; font-weight: bold; color: #25d366; margin-bottom: 10px; }
     
-    .btn-add { background-color: #fff; color: #000; border: none; padding: 9px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px; width: 100%; transition: 0.2s; }
-    .btn-add:active { background-color: #ff2a74; color: #fff; transform: scale(0.95); }
+    /* تصميم أزرار العداد المباشر على الكارت */
+    .card-actions-area { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .btn-add { background-color: #ff2a74; color: #fff; border: none; padding: 9px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px; width: 100%; transition: 0.2s; text-align: center; }
+    .btn-add:active { transform: scale(0.95); }
     
+    .qty-counter-box {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #252525; border: 1px solid #444; border-radius: 20px; padding: 4px 10px; width: 100%;
+    }
+    .qty-btn { background: #333; color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .qty-btn:hover { background: #ff2a74; }
+    .qty-num { font-size: 15px; font-weight: bold; color: #fff; }
+
     /* زر الشير على الكارت */
     .share-card-btn {
       position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.6);
@@ -195,7 +204,6 @@
     .btn-send-whatsapp-pro { background: linear-gradient(135deg, #25d366, #1baf52); color: #fff; border: none; flex: 2; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); }
     .btn-back-cart-pro { background: #222; color: #ccc; border: 1px solid #333; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; text-align: center; }
 
-    /* ستايل قائمة اختيار الأنواع (Variants) */
     .variant-select-box {
       width: 100%; background: #252525; border: 1px solid #444; color: #fff;
       padding: 8px 12px; border-radius: 10px; font-size: 13px; margin-bottom: 8px; outline: none;
@@ -205,24 +213,20 @@
 </head>
 <body>
 
-  <!-- زر واتساب العائم السريع -->
   <a href="https://wa.me/201229044897" target="_blank" class="floating-whatsapp" title="تواصل معنا عبر واتساب">💬</a>
 
-  <!-- شريط الإعلانات المتحرك أعلى الموقع -->
   <div class="ticker-bar">
     <div class="ticker-text" id="ticker-text-content">
       🔥 عروض حصرية لفترة محدودة - توصيل سريع لجميع مناطق طنطا والمحافظات - اطلبي الآن واحصلي على خصومات كاريزما المميزة! 🚚✨
     </div>
   </div>
 
-  <!-- شاشة الترحيب الأولى -->
   <div id="splash-screen">
     <img src="logo.jpg" alt="Charisma" class="splash-logo" onerror="this.src='https://via.placeholder.com/110?text=Charisma'">
     <div class="splash-title">Charisma <span>Center</span></div>
     <div class="splash-sub">PERFUMES • MAKEUP • SKINCARE</div>
   </div>
 
-  <!-- الشريط العلوي -->
   <div class="top-nav">
     <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">English 🌐</button>
     <div class="brand-container">
@@ -232,13 +236,11 @@
     <button class="cart-btn-top" onclick="openCart()">🛒 <span id="cart-count">0</span></button>
   </div>
 
-  <!-- قسم الهيرو الترحيبي -->
   <div class="hero-section">
     <div class="hero-badge" id="hero-badge-text">✨ تألقي بثقة</div>
     <h1 class="hero-title" id="hero-title-text">منتجات العناية والجمال <span>تُوصل لبابك</span></h1>
     <p class="hero-desc" id="hero-desc-text">عطور، مكياج، وعناية بالبشرة والشعر بأسعار حصرية – لعملاء كاريزما في طنطا وكل المحافظات</p>
     
-    <!-- العداد التنازلي للعروض -->
     <div class="countdown-container">
       <div class="countdown-title" id="countdown-title-text">⏳ ينتهي عرض العناية خلال:</div>
       <div class="countdown-timers">
@@ -259,17 +261,13 @@
     </div>
   </div>
 
-  <!-- شريط البحث والفلترة -->
   <div id="products-section" style="scroll-margin-top: 15px;"></div>
   <div class="search-filter-bar">
     <input type="text" id="search" class="search-box" placeholder="🔍 ابحث عن منتج بالاسم أو الكود..." oninput="filterProducts()">
     <button class="filter-price-btn" onclick="togglePriceFilter()">⚙️ <span id="filter-btn-text">فلتر السعر</span></button>
   </div>
 
-  <!-- الفئات -->
   <div class="categories" id="categories-list"></div>
-
-  <!-- شبكة المنتجات -->
   <div class="grid-container" id="products-list"></div>
 
   <!-- نافذة تفاصيل المنتج -->
@@ -284,9 +282,7 @@
       <div id="detail-product-sku" style="font-size: 12px; color: #888; margin-bottom: 8px;"></div>
       <div id="detail-product-desc" style="font-size: 14px; color: #ddd; margin-bottom: 15px; line-height: 1.6; text-align: right; background: #161616; padding: 12px; border-radius: 10px;"></div>
       
-      <!-- مكان اختيار الـ Options في نافذة التفاصيل -->
       <div id="detail-options-container" style="margin-bottom: 15px; text-align: right;"></div>
-
       <div id="detail-product-price" style="font-size: 18px; font-weight: bold; color: #25d366; margin-bottom: 15px;"></div>
       <button id="detail-add-btn" class="btn-add" style="background-color: #ff2a74; color: #fff; padding: 11px; font-size: 14px;">🛒 إضافة للسلة</button>
     </div>
@@ -358,17 +354,14 @@
   </div>
 
   <script>
-    // تشغيل العداد التنازلي الحقيقي
     let timeRemaining = 9 * 3600 + 15 * 60;
     function updateCountdown() {
       let h = Math.floor(timeRemaining / 3600);
       let m = Math.floor((timeRemaining % 3600) / 60);
       let s = timeRemaining % 60;
-
       document.getElementById('hours-box').innerText = String(h).padStart(2, '0');
       document.getElementById('mins-box').innerText = String(m).padStart(2, '0');
       document.getElementById('secs-box').innerText = String(s).padStart(2, '0');
-
       if (timeRemaining > 0) { timeRemaining--; }
     }
     setInterval(updateCountdown, 1000);
@@ -412,16 +405,11 @@
       if (event.target.classList.contains('modal-overlay')) { closeFn(); }
     }
 
-    // دالة مشاركة المنتج
     function shareProduct(event, id, name) {
       event.stopPropagation();
       const productUrl = window.location.href.split('#')[0] + '#' + id;
       if (navigator.share) {
-        navigator.share({
-          title: name,
-          text: `اكتشفي هذا المنتج الرائع من كاريزما: ${name}`,
-          url: productUrl,
-        }).catch(() => {});
+        navigator.share({ title: name, text: `اكتشفي هذا المنتج الرائع من كاريزما: ${name}`, url: productUrl }).catch(() => {});
       } else {
         navigator.clipboard.writeText(productUrl);
         alert(currentLang === 'ar' ? 'تم نسخ رابط المنتج بنجاح! 📋' : 'Product link copied! 📋');
@@ -649,6 +637,12 @@
       return text.replace(regex, '<mark>$1</mark>');
     }
 
+    function getProductCartQty(id) {
+      // جمع إجمالي كمية المنتج في السلة (بكل أنواعه)
+      let matchedItems = cart.filter(i => i.id === id);
+      return matchedItems.reduce((sum, item) => sum + item.qty, 0);
+    }
+
     function renderProducts(products, query = '') {
       const container = document.getElementById('products-list');
       const t = translations[currentLang];
@@ -656,6 +650,26 @@
       container.innerHTML = products.map(item => {
         let highlightedName = highlightText(item.name, query);
         let imgSrc = (item.image && item.image.trim() !== "") ? item.image : `${item.id}.jpg`;
+        let currentQty = getProductCartQty(item.id);
+
+        let actionAreaHTML = '';
+        if (item.options && item.options.length > 0) {
+          // إذا كان للمنتج خيارات (Options)، زر الإضافة يفتح تفاصيل المنتج ليختار النوع
+          actionAreaHTML = `<button class="btn-add" onclick="openProductDetail('${item.id}')">${t.addCartBtn}</button>`;
+        } else {
+          // إذا لم يكن له خيارات، يتم عرض العداد مباشرة على الكارت
+          if (currentQty === 0) {
+            actionAreaHTML = `<button class="btn-add" onclick="quickAddProduct('${item.id}')">${t.addCartBtn}</button>`;
+          } else {
+            actionAreaHTML = `
+              <div class="qty-counter-box">
+                <button class="qty-btn" onclick="quickChangeQty('${item.id}', -1)">-</button>
+                <span class="qty-num">${currentQty}</span>
+                <button class="qty-btn" onclick="quickChangeQty('${item.id}', 1)">+</button>
+              </div>
+            `;
+          }
+        }
 
         return `
           <div class="card">
@@ -670,12 +684,27 @@
               <div class="sku">${t.codeText}${item.id}</div>
               <div class="price-tag">${item.price > 0 ? item.price + ' ج.م' : 'حسب الكمية'}</div>
             </div>
-            <div>
-              <button class="btn-add" onclick="openProductDetail('${item.id}')">${t.addCartBtn}</button>
+            <div class="card-actions-area">
+              ${actionAreaHTML}
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    function quickAddProduct(id) {
+      const product = allProducts.find(p => p.id === id);
+      if (!product) return;
+      addCartItem(product.id, product.name, product.price, null, 1);
+      filterProducts();
+    }
+
+    function quickChangeQty(id, delta) {
+      let item = cart.find(i => i.id === id && !i.variant);
+      if (item) {
+        updateCartItemQty(item.cartKey, delta);
+      }
+      filterProducts();
     }
 
     function openProductDetail(id) {
@@ -712,6 +741,7 @@
         }
         addCartItem(product.id, product.name, product.price, chosenVariant, 1);
         closeProductDetail();
+        filterProducts();
       };
 
       showModal('product-detail-modal');
@@ -747,7 +777,8 @@
       }
       localStorage.setItem('charisma_cart', JSON.stringify(cart));
       updateCartCountUI();
-      openCart();
+      filterProducts();
+      if(document.getElementById('cart-modal').style.display === 'flex') { openCart(); }
     }
 
     function updateCartCountUI() {
@@ -796,6 +827,7 @@
         cart = [];
         localStorage.removeItem('charisma_cart');
         updateCartCountUI();
+        filterProducts();
         openCart();
       }
     }
