@@ -8,6 +8,22 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: #121212; color: #fff; padding: 15px; overflow-x: hidden; }
     
+    /* شريط الإعلانات العاجلة المتحرك أعلى الموقع */
+    .ticker-bar {
+      background: linear-gradient(90deg, #ff2a74, #b31e51, #ff2a74);
+      color: #fff; font-size: 13px; font-weight: bold; padding: 8px 0;
+      text-align: center; border-radius: 8px; margin-bottom: 12px;
+      overflow: hidden; white-space: nowrap; box-shadow: 0 2px 10px rgba(255,42,116,0.3);
+    }
+    .ticker-text {
+      display: inline-block;
+      animation: tickerMove 18s linear infinite;
+    }
+    @keyframes tickerMove {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
     /* شاشة الترحيب الأولى */
     #splash-screen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -52,6 +68,19 @@
     .hero-title { font-size: 24px; font-weight: bold; color: #fff; margin-bottom: 8px; line-height: 1.4; }
     .hero-title span { color: #ff2a74; }
     .hero-desc { font-size: 14px; color: #ddd; margin-bottom: 15px; line-height: 1.6; }
+    
+    /* تصميم العداد التنازلي المطور */
+    .countdown-container {
+      background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 42, 116, 0.4);
+      border-radius: 12px; padding: 10px; margin-bottom: 15px; display: flex;
+      flex-direction: column; align-items: center; gap: 6px;
+    }
+    .countdown-title { font-size: 12px; color: #ff2a74; font-weight: bold; }
+    .countdown-timers { display: flex; gap: 10px; justify-content: center; }
+    .timer-box { background: #1a1a1a; padding: 6px 10px; border-radius: 8px; border: 1px solid #333; text-align: center; min-width: 45px; }
+    .timer-num { font-size: 16px; font-weight: bold; color: #25d366; }
+    .timer-lbl { font-size: 9px; color: #aaa; }
+
     .hero-btns { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
     .btn-hero-primary { background: #ff2a74; color: #fff; border: none; padding: 11px 22px; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(255,42,116,0.4); }
     .btn-hero-secondary { background: transparent; color: #fff; border: 1px solid #555; padding: 11px 22px; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; }
@@ -88,19 +117,10 @@
     .title { font-size: 14px; font-weight: bold; margin-bottom: 6px; line-height: 1.4; height: 40px; overflow: hidden; cursor: pointer; }
     .title:hover { color: #ff2a74; }
     
-    /* تصميم بارز ومميز لتنبيه التفاصيل والمواصفات */
     .detail-hint { 
-      background: rgba(255, 42, 116, 0.15);
-      color: #ff2a74; 
-      font-size: 12px; 
-      font-weight: bold;
-      padding: 7px 10px;
-      border-radius: 8px;
-      margin: 8px 0; 
-      text-align: center;
-      cursor: pointer; 
-      border: 1px dashed rgba(255, 42, 116, 0.5);
-      transition: 0.2s;
+      background: rgba(255, 42, 116, 0.15); color: #ff2a74; font-size: 12px; font-weight: bold;
+      padding: 7px 10px; border-radius: 8px; margin: 8px 0; text-align: center;
+      cursor: pointer; border: 1px dashed rgba(255, 42, 116, 0.5); transition: 0.2s;
     }
     .detail-hint:hover { background: rgba(255, 42, 116, 0.3); }
 
@@ -138,7 +158,6 @@
     .close-modal-x { background: #252525; color: #aaa; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
     .close-modal-x:hover { background: #ff2a74; color: #fff; }
 
-    /* تفاصيل المنتجات داخل السلة */
     #cart-items-list { margin-bottom: 15px; }
     .cart-item { background: #161616; border: 1px solid #262626; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     .cart-item-title { font-weight: bold; color: #fff; font-size: 14px; margin-bottom: 4px; }
@@ -148,62 +167,37 @@
     .total-box { display: flex; justify-content: space-between; align-items: center; background: #161616; padding: 14px 18px; border-radius: 14px; margin-bottom: 18px; border: 1px solid #262626; }
     .total-amount { color: #25d366; font-size: 19px; font-weight: bold; }
 
-    /* أزرار السلة الرئيسية */
     .cart-actions { display: flex; gap: 10px; }
-    .btn-checkout { background: linear-gradient(135deg, #ff2a74, #d91a5b); color: #fff; border: none; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 15px; box-shadow: 0 4px 15px rgba(255,42,116,0.3); transition: 0.2s; }
-    .btn-checkout:active { transform: scale(0.97); }
+    .btn-checkout { background: linear-gradient(135deg, #ff2a74, #d91a5b); color: #fff; border: none; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 15px; box-shadow: 0 4px 15px rgba(255,42,116,0.3); }
     .btn-clear-cart { background: #222; color: #ff5555; border: 1px solid #333; padding: 14px 16px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
-    /* تصميم إتمام الطلب الإبداعي الجديد */
-    .checkout-flow-card {
-      background: linear-gradient(145deg, #1f1f1f, #151515);
-      border: 1px solid #333;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 15px;
-      box-shadow: inset 0 2px 5px rgba(255,255,255,0.03);
-    }
+    .checkout-flow-card { background: linear-gradient(145deg, #1f1f1f, #151515); border: 1px solid #333; border-radius: 18px; padding: 16px; margin-bottom: 15px; }
     .checkout-step-container { display: flex; flex-direction: column; gap: 14px; }
-    
     .form-group-modern { position: relative; }
-    .form-label-modern { 
-      font-size: 12px; color: #ff2a74; font-weight: bold; margin-bottom: 6px; 
-      display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; 
-    }
-    .form-input-modern { 
-      width: 100%; background: #111; border: 1.5px solid #2d2d2d; border-radius: 14px; 
-      padding: 13px 16px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; 
-    }
-    .form-input-modern:focus { 
-      border-color: #ff2a74; background: #181818; 
-      box-shadow: 0 0 12px rgba(255, 42, 116, 0.25); 
-    }
+    .form-label-modern { font-size: 12px; color: #ff2a74; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+    .form-input-modern { width: 100%; background: #111; border: 1.5px solid #2d2d2d; border-radius: 14px; padding: 13px 16px; color: #fff; font-size: 14px; outline: none; transition: all 0.3s ease; }
+    .form-input-modern:focus { border-color: #ff2a74; background: #181818; box-shadow: 0 0 12px rgba(255, 42, 116, 0.25); }
     
-    .checkout-receipt-preview { 
-      background: #111; border: 1px dashed #333; border-radius: 14px; padding: 14px; margin-bottom: 15px; 
-    }
+    .checkout-receipt-preview { background: #111; border: 1px dashed #333; border-radius: 14px; padding: 14px; margin-bottom: 15px; }
     .receipt-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin-bottom: 6px; color: #ccc; }
     .receipt-row:last-child { margin-bottom: 0; padding-top: 8px; border-top: 1px solid #222; font-weight: bold; color: #fff; }
     
     .checkout-buttons-grid { display: flex; gap: 10px; margin-top: 5px; }
-    .btn-send-whatsapp-pro { 
-      background: linear-gradient(135deg, #25d366, #1baf52); color: #fff; border: none; flex: 2; 
-      padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 14px; 
-      display: flex; align-items: center; justify-content: center; gap: 8px; 
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); transition: 0.2s; 
-    }
-    .btn-send-whatsapp-pro:active { transform: scale(0.97); }
-    .btn-back-cart-pro { 
-      background: #222; color: #ccc; border: 1px solid #333; flex: 1; 
-      padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; text-align: center; transition: 0.2s; 
-    }
-    .btn-back-cart-pro:hover { background: #2a2a2a; color: #fff; }
+    .btn-send-whatsapp-pro { background: linear-gradient(135deg, #25d366, #1baf52); color: #fff; border: none; flex: 2; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); }
+    .btn-back-cart-pro { background: #222; color: #ccc; border: 1px solid #333; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; text-align: center; }
   </style>
 </head>
 <body>
 
   <!-- زر واتساب العائم السريع -->
   <a href="https://wa.me/201229044897" target="_blank" class="floating-whatsapp" title="تواصل معنا عبر واتساب">💬</a>
+
+  <!-- شريط الإعلانات المتحرك أعلى الموقع -->
+  <div class="ticker-bar">
+    <div class="ticker-text" id="ticker-text-content">
+      🔥 عروض حصرية لفترة محدودة - توصيل سريع لجميع مناطق طنطا والمحافظات - اطلبي الآن واحصلي على خصومات كاريزما المميزة! 🚚✨
+    </div>
+  </div>
 
   <!-- شاشة الترحيب الأولى -->
   <div id="splash-screen">
@@ -227,23 +221,25 @@
     <div class="hero-badge" id="hero-badge-text">✨ تألقي بثقة</div>
     <h1 class="hero-title" id="hero-title-text">منتجات العناية والجمال <span>تُوصل لبابك</span></h1>
     <p class="hero-desc" id="hero-desc-text">عطور، مكياج، وعناية بالبشرة والشعر بأسعار حصرية – لعملاء كاريزما في طنطا وكل المحافظات</p>
+    
+    <!-- العداد التنازلي للعروض -->
+    <div class="countdown-container">
+      <div class="countdown-title" id="countdown-title-text">⏳ ينتهي عرض العناية خلال:</div>
+      <div class="countdown-timers">
+        <div class="timer-box"><div class="timer-num" id="hours-box">08</div><div class="timer-lbl">ساعة</div></div>
+        <div class="timer-box"><div class="timer-num" id="mins-box">42</div><div class="timer-lbl">دقيقة</div></div>
+        <div class="timer-box"><div class="timer-num" id="secs-box">30</div><div class="timer-lbl">ثانية</div></div>
+      </div>
+    </div>
+
     <div class="hero-btns">
       <button class="btn-hero-primary" onclick="scrollToProducts()" id="hero-btn-shop">تسوقي الآن ✨</button>
       <button class="btn-hero-secondary" onclick="openWhatsappDirect()" id="hero-btn-help">تواصل معنا</button>
     </div>
     <div class="hero-stats">
-      <div>
-        <div class="stat-num">500+</div>
-        <div class="stat-label" id="stat-1">منتج متاح</div>
-      </div>
-      <div>
-        <div class="stat-num">24</div>
-        <div class="stat-label" id="stat-2">تصنيف متنوع</div>
-      </div>
-      <div>
-        <div class="stat-num">🚚</div>
-        <div class="stat-label" id="stat-3">توصيل لكل المحافظات</div>
-      </div>
+      <div><div class="stat-num">500+</div><div class="stat-label" id="stat-1">منتج متاح</div></div>
+      <div><div class="stat-num">24</div><div class="stat-label" id="stat-2">تصنيف متنوع</div></div>
+      <div><div class="stat-num">🚚</div><div class="stat-label" id="stat-3">توصيل لكل المحافظات</div></div>
     </div>
   </div>
 
@@ -283,14 +279,11 @@
         <h2 id="modal-title">🛒 سلة المشتريات</h2>
         <button class="close-modal-x" onclick="closeCart()">✕</button>
       </div>
-      
       <div id="cart-items-list"></div>
-      
       <div class="total-box">
         <span id="total-text" style="font-weight: bold; color: #ccc; font-size: 15px;">الإجمالي العام:</span>
         <span class="total-amount" id="cart-total-price">0 ج.م</span>
       </div>
-
       <div class="cart-actions">
         <button class="btn-checkout" onclick="openCheckoutStep()" id="proceed-btn-text">✨ إتمام الطلب وسرعة الشحن</button>
         <button class="btn-clear-cart" onclick="clearCart()" id="clear-btn-text">إفراغ السلة</button>
@@ -305,7 +298,6 @@
         <h2 id="checkout-main-title">🚀 تأكيد الطلب السريع</h2>
         <button class="close-modal-x" onclick="closeCheckoutStep()">✕</button>
       </div>
-
       <div class="checkout-receipt-preview">
         <div class="receipt-row">
           <span id="summary-items-count-text">عدد الأصناف المختارة</span>
@@ -316,31 +308,26 @@
           <span id="checkout-mini-total" style="color: #25d366; font-weight: bold;">0 ج.م</span>
         </div>
       </div>
-
       <div class="checkout-flow-card">
         <div class="checkout-step-container">
           <div class="form-group-modern">
             <label class="form-label-modern" id="label-name">👤 الاسم بالكامل</label>
             <input type="text" id="customer-name" class="form-input-modern" placeholder="اكتبي اسمك الكريم هنا...">
           </div>
-
           <div class="form-group-modern">
             <label class="form-label-modern" id="label-phone">📞 رقم الهاتف (للتواصل وتأكيد الشحن)</label>
             <input type="tel" id="customer-phone" class="form-input-modern" placeholder="مثال: 01012345678">
           </div>
-
           <div class="form-group-modern">
             <label class="form-label-modern" id="label-city">🏙️ المدينـة / المحافظة</label>
             <input type="text" id="customer-city" class="form-input-modern" value="طنطا" placeholder="مثال: طنطا">
           </div>
-
           <div class="form-group-modern">
             <label class="form-label-modern" id="label-address">🏠 العنوان بالتفصيل</label>
             <input type="text" id="customer-address" class="form-input-modern" placeholder="مثال: شارع الجلاء، عمارة 5، الدور الثاني">
           </div>
         </div>
       </div>
-
       <div class="checkout-buttons-grid">
         <button class="btn-send-whatsapp-pro" onclick="sendOrderToWhatsapp()" id="whatsapp-send-btn-text">
           <span>📲 إرسال الطلب عبر واتساب</span>
@@ -351,6 +338,24 @@
   </div>
 
   <script>
+    // تشغيل العداد التنازلي الحقيقي
+    let timeRemaining = 9 * 3600 + 15 * 60; // 9 ساعات و 15 دقيقة
+    function updateCountdown() {
+      let h = Math.floor(timeRemaining / 3600);
+      let m = Math.floor((timeRemaining % 3600) / 60);
+      let s = timeRemaining % 60;
+
+      document.getElementById('hours-box').innerText = String(h).padStart(2, '0');
+      document.getElementById('mins-box').innerText = String(m).padStart(2, '0');
+      document.getElementById('secs-box').innerText = String(s).padStart(2, '0');
+
+      if (timeRemaining > 0) {
+        timeRemaining--;
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
     window.addEventListener('load', () => {
       setTimeout(() => {
         const splash = document.getElementById('splash-screen');
@@ -364,27 +369,21 @@
     let selectedCat = 'الكل';
     let priceFilterActive = false;
     let cart = JSON.parse(localStorage.getItem('charisma_cart')) || [];
-
-    // نظام متطور للتحكم في النوافذ وزر الرجوع في الموبايل لمنع خروج المستخدم من الموقع
     let activeModalId = null;
 
     function showModal(modalId) {
       document.getElementById(modalId).style.display = 'flex';
       activeModalId = modalId;
-      // إضافة حالة في تاريخ المتصفح لكي يتعامل زر الرجوع مع إغلاق النافذة بدل الخروج
       history.pushState({ modal: modalId }, '', '');
     }
 
     function hideModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
-      if (activeModalId === modalId) {
-        activeModalId = null;
-      }
+      if (activeModalId === modalId) { activeModalId = null; }
     }
 
     window.addEventListener('popstate', (event) => {
       if (activeModalId) {
-        // إذا كانت هناك نافذة مفتوحة، أغلقها بدلاً من مغادرة الصفحة
         document.getElementById(activeModalId).style.display = 'none';
         activeModalId = null;
         event.preventDefault();
@@ -392,9 +391,7 @@
     });
 
     function checkModalBackdrop(event, closeFn) {
-      if (event.target.classList.contains('modal-overlay')) {
-        closeFn();
-      }
+      if (event.target.classList.contains('modal-overlay')) { closeFn(); }
     }
 
     const translations = {
@@ -402,9 +399,11 @@
         htmlLang: 'ar', htmlDir: 'rtl',
         langBtn: 'English 🌐',
         brandName: 'كاريزما',
+        tickerText: '🔥 عروض حصرية لفترة محدودة - توصيل سريع لجميع مناطق طنطا والمحافظات - اطلبي الآن واحصلي على خصومات كاريزما المميزة! 🚚✨',
         heroBadge: '✨ تألقي بثقة',
         heroTitle: 'منتجات العناية والجمال <span>تُوصل لبابك</span>',
         heroDesc: 'عطور، مكياج، وعناية بالبشرة والشعر بأسعار حصرية – لعملاء كاريزما في طنطا وكل المحافظات',
+        countdownTitle: '⏳ ينتهي عرض العناية خلال:',
         heroShop: 'تسوقي الآن ✨',
         heroHelp: 'تواصل معنا',
         stat1: 'منتج متاح', stat2: 'تصنيف متنوع', stat3: 'توصيل لكل المحافظات',
@@ -436,9 +435,11 @@
         htmlLang: 'en', htmlDir: 'ltr',
         langBtn: 'عربي 🌐',
         brandName: 'Charisma',
+        tickerText: '🔥 Exclusive Limited-Time Offers - Fast Delivery across Tanta & All Cities - Order Now! 🚚✨',
         heroBadge: '✨ Glow with Confidence',
         heroTitle: 'Beauty & Care Products <span>Delivered to You</span>',
         heroDesc: 'Perfumes, makeup, hair & skin care at exclusive prices - Charisma in Tanta & all cities',
+        countdownTitle: '⏳ Offer ends in:',
         heroShop: 'Shop Now ✨',
         heroHelp: 'Contact Us',
         stat1: 'Products', stat2: 'Categories', stat3: 'Fast Delivery',
@@ -476,9 +477,11 @@
       document.getElementById('html-root').setAttribute('dir', t.htmlDir);
       document.getElementById('lang-toggle-btn').innerText = t.langBtn;
       document.getElementById('brand-title-text').innerText = t.brandName;
+      document.getElementById('ticker-text-content').innerText = t.tickerText;
       document.getElementById('hero-badge-text').innerText = t.heroBadge;
       document.getElementById('hero-title-text').innerHTML = t.heroTitle;
       document.getElementById('hero-desc-text').innerText = t.heroDesc;
+      document.getElementById('countdown-title-text').innerText = t.countdownTitle;
       document.getElementById('hero-btn-shop').innerText = t.heroShop;
       document.getElementById('hero-btn-help').innerText = t.heroHelp;
       document.getElementById('stat-1').innerText = t.stat1;
@@ -534,9 +537,7 @@
       .catch(err => {
         const sampleData = [
           { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, category: "سكين كير", description: "غسول مثالي لإزالة الدهون وتنظيف المسام بعمق." },
-          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير", description: "شامبو مغذي يرطب الشعر ويقلل من التقصف." },
-          { id: "103", name: "برسيل جل للملابس", price: 120, category: "منظفات", description: "جل غسيل قوي لإزالة البقع الصعبة والحفاظ على الألوان." },
-          { id: "104", name: "مجموعة مكياج متكاملة", price: 350, category: "مكياج", description: "مجموعة أساسية لإطلالة عصرية ومتألقة طوال اليوم." }
+          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير", description: "شامبو مغذي يرطب الشعر ويقلل من التقصف." }
         ];
         processProducts(sampleData);
       });
@@ -668,9 +669,7 @@
       showModal('product-detail-modal');
     }
 
-    function closeProductDetail() {
-      hideModal('product-detail-modal');
-    }
+    function closeProductDetail() { hideModal('product-detail-modal'); }
 
     function changeQty(id, name, price, delta) {
       let item = cart.find(i => i.id === id);
@@ -684,9 +683,7 @@
       localStorage.setItem('charisma_cart', JSON.stringify(cart));
       updateCartCountUI();
       filterProducts();
-      if(document.getElementById('cart-modal').style.display === 'flex') {
-        openCart();
-      }
+      if(document.getElementById('cart-modal').style.display === 'flex') { openCart(); }
     }
 
     function updateCartCountUI() {
@@ -727,9 +724,7 @@
       showModal('cart-modal');
     }
 
-    function closeCart() {
-      hideModal('cart-modal');
-    }
+    function closeCart() { hideModal('cart-modal'); }
 
     function clearCart() {
       if(confirm(currentLang === 'ar' ? 'هل أنت متأكد من إفراغ السلة؟' : 'Are you sure to clear cart?')) {
@@ -746,24 +741,16 @@
         return;
       }
       closeCart();
-      
       const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
       let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       
       document.getElementById('checkout-mini-count').innerText = totalCount + (currentLang === 'ar' ? ' أصناف' : ' items');
       document.getElementById('checkout-mini-total').innerText = total > 0 ? total + ' ج.م' : (currentLang === 'ar' ? 'حسب التأكيد' : 'Upon confirmation');
-      
       showModal('checkout-modal');
     }
 
-    function closeCheckoutStep() {
-      hideModal('checkout-modal');
-    }
-
-    function backToCart() {
-      closeCheckoutStep();
-      openCart();
-    }
+    function closeCheckoutStep() { hideModal('checkout-modal'); }
+    function backToCart() { closeCheckoutStep(); openCart(); }
 
     function sendOrderToWhatsapp() {
       const name = document.getElementById('customer-name').value.trim();
@@ -777,7 +764,6 @@
       }
 
       let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      
       let message = `✨ *طلب جديد من متجر كاريزما* ✨%0a%0a`;
       message += `👤 *الاسم:* ${name}%0a`;
       message += `📞 *الهاتف:* ${phone}%0a`;
