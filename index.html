@@ -204,11 +204,31 @@
     .btn-send-whatsapp-pro { background: linear-gradient(135deg, #25d366, #1baf52); color: #fff; border: none; flex: 2; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); }
     .btn-back-cart-pro { background: #222; color: #ccc; border: 1px solid #333; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; text-align: center; }
 
+    /* تنسيق القائمة المنسدلة نظيفة وبدون صور أو رموز */
     .variant-select-box {
-      width: 100%; background: #252525; border: 1px solid #444; color: #fff;
-      padding: 8px 12px; border-radius: 10px; font-size: 13px; margin-bottom: 8px; outline: none;
+      width: 100%; 
+      background: #252525; 
+      border: 1px solid #444; 
+      color: #fff;
+      padding: 10px 14px; 
+      border-radius: 10px; 
+      font-size: 14px; 
+      margin-bottom: 8px; 
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23aaa'><polygon points='0,0 12,0 6,6'/></svg>");
+      background-repeat: no-repeat;
+      background-position: left 12px center;
+      cursor: pointer;
     }
     .variant-select-box:focus { border-color: #ff2a74; }
+    .variant-select-box option {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
@@ -638,7 +658,6 @@
     }
 
     function getProductCartQty(id) {
-      // جمع إجمالي كمية المنتج في السلة (بكل أنواعه)
       let matchedItems = cart.filter(i => i.id === id);
       return matchedItems.reduce((sum, item) => sum + item.qty, 0);
     }
@@ -654,10 +673,8 @@
 
         let actionAreaHTML = '';
         if (item.options && item.options.length > 0) {
-          // إذا كان للمنتج خيارات (Options)، زر الإضافة يفتح تفاصيل المنتج ليختار النوع
           actionAreaHTML = `<button class="btn-add" onclick="openProductDetail('${item.id}')">${t.addCartBtn}</button>`;
         } else {
-          // إذا لم يكن له خيارات، يتم عرض العداد مباشرة على الكارت
           if (currentQty === 0) {
             actionAreaHTML = `<button class="btn-add" onclick="quickAddProduct('${item.id}')">${t.addCartBtn}</button>`;
           } else {
