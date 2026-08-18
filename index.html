@@ -110,13 +110,16 @@
 
     /* شبكة المنتجات */
     .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-    .card { background-color: #1e1e1e; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #2a2a2a; transition: 0.2s; }
+    .card { background-color: #1e1e1e; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #2a2a2a; transition: 0.2s; position: relative; }
     .card:hover { border-color: #ff2a7455; }
     .product-img { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; background-color: #252525; cursor: pointer; }
     .category-label { color: #ff2a74; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
     .title { font-size: 14px; font-weight: bold; margin-bottom: 6px; line-height: 1.4; height: 40px; overflow: hidden; cursor: pointer; }
     .title:hover { color: #ff2a74; }
     
+    /* تلوين الكلمات المطابقة للبحث */
+    mark { background-color: rgba(255, 42, 116, 0.4); color: #fff; padding: 0 2px; border-radius: 3px; }
+
     .detail-hint { 
       background: rgba(255, 42, 116, 0.15); color: #ff2a74; font-size: 12px; font-weight: bold;
       padding: 7px 10px; border-radius: 8px; margin: 8px 0; text-align: center;
@@ -130,9 +133,14 @@
     .btn-add { background-color: #fff; color: #000; border: none; padding: 9px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px; width: 100%; transition: 0.2s; }
     .btn-add:active { background-color: #ff2a74; color: #fff; transform: scale(0.95); }
     
-    .qty-box { display: flex; align-items: center; justify-content: space-between; background: #252525; border-radius: 20px; padding: 4px 8px; border: 1px solid #333; }
-    .qty-btn { background: #ff2a74; color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
-    .qty-num { font-size: 15px; font-weight: bold; color: #fff; }
+    /* زر الشير على الكارت */
+    .share-card-btn {
+      position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 30px; height: 30px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; cursor: pointer; transition: 0.2s; z-index: 2;
+    }
+    .share-card-btn:hover { background: #ff2a74; border-color: #ff2a74; }
 
     /* زر واتساب العائم السريع */
     .floating-whatsapp {
@@ -161,6 +169,7 @@
     #cart-items-list { margin-bottom: 15px; }
     .cart-item { background: #161616; border: 1px solid #262626; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     .cart-item-title { font-weight: bold; color: #fff; font-size: 14px; margin-bottom: 4px; }
+    .cart-item-variant { font-size: 12px; color: #ff2a74; margin-bottom: 3px; font-weight: bold; }
     .cart-item-sku { font-size: 11px; color: #888; margin-bottom: 4px; }
     .cart-item-price { font-size: 13px; color: #25d366; font-weight: bold; }
     
@@ -185,6 +194,13 @@
     .checkout-buttons-grid { display: flex; gap: 10px; margin-top: 5px; }
     .btn-send-whatsapp-pro { background: linear-gradient(135deg, #25d366, #1baf52); color: #fff; border: none; flex: 2; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); }
     .btn-back-cart-pro { background: #222; color: #ccc; border: 1px solid #333; flex: 1; padding: 14px; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 13px; text-align: center; }
+
+    /* ستايل قائمة اختيار الأنواع (Variants) */
+    .variant-select-box {
+      width: 100%; background: #252525; border: 1px solid #444; color: #fff;
+      padding: 8px 12px; border-radius: 10px; font-size: 13px; margin-bottom: 8px; outline: none;
+    }
+    .variant-select-box:focus { border-color: #ff2a74; }
   </style>
 </head>
 <body>
@@ -267,6 +283,10 @@
       <div id="detail-product-category" style="color: #ff2a74; font-size: 12px; font-weight: bold; margin-bottom: 6px;"></div>
       <div id="detail-product-sku" style="font-size: 12px; color: #888; margin-bottom: 8px;"></div>
       <div id="detail-product-desc" style="font-size: 14px; color: #ddd; margin-bottom: 15px; line-height: 1.6; text-align: right; background: #161616; padding: 12px; border-radius: 10px;"></div>
+      
+      <!-- مكان اختيار الـ Options في نافذة التفاصيل -->
+      <div id="detail-options-container" style="margin-bottom: 15px; text-align: right;"></div>
+
       <div id="detail-product-price" style="font-size: 18px; font-weight: bold; color: #25d366; margin-bottom: 15px;"></div>
       <button id="detail-add-btn" class="btn-add" style="background-color: #ff2a74; color: #fff; padding: 11px; font-size: 14px;">🛒 إضافة للسلة</button>
     </div>
@@ -339,7 +359,7 @@
 
   <script>
     // تشغيل العداد التنازلي الحقيقي
-    let timeRemaining = 9 * 3600 + 15 * 60; // 9 ساعات و 15 دقيقة
+    let timeRemaining = 9 * 3600 + 15 * 60;
     function updateCountdown() {
       let h = Math.floor(timeRemaining / 3600);
       let m = Math.floor((timeRemaining % 3600) / 60);
@@ -349,9 +369,7 @@
       document.getElementById('mins-box').innerText = String(m).padStart(2, '0');
       document.getElementById('secs-box').innerText = String(s).padStart(2, '0');
 
-      if (timeRemaining > 0) {
-        timeRemaining--;
-      }
+      if (timeRemaining > 0) { timeRemaining--; }
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
@@ -392,6 +410,22 @@
 
     function checkModalBackdrop(event, closeFn) {
       if (event.target.classList.contains('modal-overlay')) { closeFn(); }
+    }
+
+    // دالة مشاركة المنتج
+    function shareProduct(event, id, name) {
+      event.stopPropagation();
+      const productUrl = window.location.href.split('#')[0] + '#' + id;
+      if (navigator.share) {
+        navigator.share({
+          title: name,
+          text: `اكتشفي هذا المنتج الرائع من كاريزما: ${name}`,
+          url: productUrl,
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(productUrl);
+        alert(currentLang === 'ar' ? 'تم نسخ رابط المنتج بنجاح! 📋' : 'Product link copied! 📋');
+      }
     }
 
     const translations = {
@@ -537,7 +571,7 @@
       .catch(err => {
         const sampleData = [
           { id: "101", name: "غسول وجه للبشرة الدهنية", price: 150, category: "سكين كير", description: "غسول مثالي لإزالة الدهون وتنظيف المسام بعمق." },
-          { id: "102", name: "شامبو للشعر الجاف", price: 95, category: "هير كير", description: "شامبو مغذي يرطب الشعر ويقلل من التقصف." }
+          { id: "102", name: "إيفا سبلاش معطر للجسم", price: 95, category: "بارفان سبلاش مزيلات", description: "سبلاش مرطب ومنعش للجسم برائحة تدوم.", options: ["فراولة", "فانيليا", "صبار", "توت"] }
         ];
         processProducts(sampleData);
       });
@@ -546,7 +580,8 @@
       allProducts = data.map(p => ({
         ...p,
         price: p.price ? parseFloat(p.price) : 0,
-        category: p.category || getProfessionalCategory(p.name)
+        category: p.category || getProfessionalCategory(p.name),
+        options: p.options || null
       }));
       renderCategories();
       filterProducts();
@@ -605,45 +640,39 @@
         filtered.sort((a, b) => a.price - b.price);
       }
 
-      renderProducts(filtered);
+      renderProducts(filtered, query);
     }
 
-    function renderProducts(products) {
+    function highlightText(text, query) {
+      if (!query) return text;
+      const regex = new RegExp(`(${query})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
+
+    function renderProducts(products, query = '') {
       const container = document.getElementById('products-list');
       const t = translations[currentLang];
 
       container.innerHTML = products.map(item => {
-        const cartItem = cart.find(i => i.id === item.id);
-        const qty = cartItem ? cartItem.qty : 0;
-
-        let actionHtml = '';
-        if (qty === 0) {
-          actionHtml = `<button class="btn-add" onclick="changeQty('${item.id}', '${item.name}', ${item.price}, 1)">${t.addCartBtn}</button>`;
-        } else {
-          actionHtml = `
-            <div class="qty-box">
-              <button class="qty-btn" onclick="changeQty('${item.id}', '${item.name}', ${item.price}, -1)">-</button>
-              <span class="qty-num">${qty}</span>
-              <button class="qty-btn" onclick="changeQty('${item.id}', '${item.name}', ${item.price}, 1)">+</button>
-            </div>
-          `;
-        }
-
+        let highlightedName = highlightText(item.name, query);
         let imgSrc = (item.image && item.image.trim() !== "") ? item.image : `${item.id}.jpg`;
 
         return `
           <div class="card">
+            <button class="share-card-btn" onclick="shareProduct(event, '${item.id}', '${item.name}')" title="مشاركة المنتج">🔗</button>
             <div>
               <div onclick="openProductDetail('${item.id}')" style="cursor: pointer;">
                 <img src="${imgSrc}" alt="${item.name}" class="product-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><text x=\'50%\' y=\'50%\' font-size=\'30\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#444\'>📦</text></svg>';">
               </div>
               <div class="category-label">${item.category}</div>
-              <div class="title" onclick="openProductDetail('${item.id}')">${item.name}</div>
+              <div class="title" onclick="openProductDetail('${item.id}')">${highlightedName}</div>
               <div class="detail-hint" onclick="openProductDetail('${item.id}')">${t.detailHint}</div>
               <div class="sku">${t.codeText}${item.id}</div>
               <div class="price-tag">${item.price > 0 ? item.price + ' ج.م' : 'حسب الكمية'}</div>
             </div>
-            <div>${actionHtml}</div>
+            <div>
+              <button class="btn-add" onclick="openProductDetail('${item.id}')">${t.addCartBtn}</button>
+            </div>
           </div>
         `;
       }).join('');
@@ -660,9 +689,28 @@
       document.getElementById('detail-product-desc').innerText = product.description || "لا توجد مواصفات تفصيلية مضافة لهذا المنتج حالياً.";
       document.getElementById('detail-product-price').innerText = product.price > 0 ? product.price + ' ج.م' : 'السعر حسب الطلب';
       
+      const optionsContainer = document.getElementById('detail-options-container');
+      if (product.options && product.options.length > 0) {
+        optionsContainer.innerHTML = `
+          <label style="font-size: 12px; color: #ff2a74; font-weight: bold; display: block; margin-bottom: 5px;">✨ اختر النوع أو الرائحة:</label>
+          <select id="selected-product-option" class="variant-select-box">
+            ${product.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+          </select>
+        `;
+        optionsContainer.style.display = 'block';
+      } else {
+        optionsContainer.innerHTML = '';
+        optionsContainer.style.display = 'none';
+      }
+
       const addBtn = document.getElementById('detail-add-btn');
       addBtn.onclick = function() {
-        changeQty(product.id, product.name, product.price, 1);
+        let chosenVariant = null;
+        const selectEl = document.getElementById('selected-product-option');
+        if (selectEl) {
+          chosenVariant = selectEl.value;
+        }
+        addCartItem(product.id, product.name, product.price, chosenVariant, 1);
         closeProductDetail();
       };
 
@@ -671,19 +719,35 @@
 
     function closeProductDetail() { hideModal('product-detail-modal'); }
 
-    function changeQty(id, name, price, delta) {
-      let item = cart.find(i => i.id === id);
+    function addCartItem(id, name, price, variant, delta) {
+      let cartKey = variant ? `${id}_${variant}` : id;
+      let item = cart.find(i => i.cartKey === cartKey);
+      
       if (item) {
         item.qty += delta;
-        if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+        if (item.qty <= 0) {
+          cart = cart.filter(i => i.cartKey !== cartKey);
+        }
       } else if (delta > 0) {
-        cart.push({ id, name, price, qty: 1 });
+        cart.push({ cartKey, id, name, price, variant, qty: 1 });
       }
       
       localStorage.setItem('charisma_cart', JSON.stringify(cart));
       updateCartCountUI();
-      filterProducts();
       if(document.getElementById('cart-modal').style.display === 'flex') { openCart(); }
+    }
+
+    function updateCartItemQty(cartKey, delta) {
+      let item = cart.find(i => i.cartKey === cartKey);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) {
+          cart = cart.filter(i => i.cartKey !== cartKey);
+        }
+      }
+      localStorage.setItem('charisma_cart', JSON.stringify(cart));
+      updateCartCountUI();
+      openCart();
     }
 
     function updateCartCountUI() {
@@ -708,13 +772,14 @@
             <div class="cart-item">
               <div>
                 <div class="cart-item-title">${item.name}</div>
+                ${item.variant ? `<div class="cart-item-variant">النوع: ${item.variant}</div>` : ''}
                 <div class="cart-item-sku">كود: ${item.id}</div>
                 <div class="cart-item-price">${item.price > 0 ? itemTotal + ' ج.م (' + item.qty + ' × ' + item.price + ')' : ''}</div>
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <button onclick="changeQty('${item.id}', '${item.name}', ${item.price}, -1)" style="background:#222; color:#fff; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; font-size:15px;">-</button>
+                <button onclick="updateCartItemQty('${item.cartKey}', -1)" style="background:#222; color:#fff; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; font-size:15px;">-</button>
                 <span style="font-weight:bold; font-size:15px;">${item.qty}</span>
-                <button onclick="changeQty('${item.id}', '${item.name}', ${item.price}, 1)" style="background:#222; color:#fff; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; font-size:15px;">+</button>
+                <button onclick="updateCartItemQty('${item.cartKey}', 1)" style="background:#222; color:#fff; border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-weight:bold; font-size:15px;">+</button>
               </div>
             </div>
           `;
@@ -772,7 +837,8 @@
       message += `🛒 *تفاصيل المنتجات:*%0a`;
       
       cart.forEach((item, index) => {
-        message += `${index + 1}. ${item.name} (كود: ${item.id}) × ${item.qty} ${item.price > 0 ? '- ' + (item.price * item.qty) + ' ج.م' : ''}%0a`;
+        let variantText = item.variant ? ` (النوع: ${item.variant})` : '';
+        message += `${index + 1}. ${item.name}${variantText} (كود: ${item.id}) × ${item.qty} ${item.price > 0 ? '- ' + (item.price * item.qty) + ' ج.م' : ''}%0a`;
       });
       
       if (total > 0) message += `%0a💰 *الإجمالي الكلي:* ${total} ج.م`;
