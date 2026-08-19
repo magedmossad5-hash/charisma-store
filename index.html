@@ -651,7 +651,12 @@
 
       container.innerHTML = products.map(item => {
         let highlightedName = highlightText(item.name, query);
-        let imgSrc = (item.image && item.image.trim() !== "") ? item.image : `${item.id}.jpg`;
+        
+        // التعديل هنا: دعم قراءة الامتداد المرن من الـ JSON أو مجلد images تلقائياً بأي نوع (jpg, webp, png)
+        let imgSrc = (item.image && item.image.trim() !== "") 
+          ? (item.image.includes('/') ? item.image : `images/${item.image}`) 
+          : `images/${item.id}.jpg`;
+
         let currentQty = getProductCartQty(item.id);
 
         let actionAreaHTML = '';
@@ -712,7 +717,12 @@
       if (!product) return;
 
       document.getElementById('detail-product-title').innerText = product.name;
-      document.getElementById('detail-product-img').src = (product.image && product.image.trim() !== "") ? product.image : `${product.id}.jpg`;
+      
+      // التعديل هنا أيضاً ليطابق نافذة التفاصيل
+      document.getElementById('detail-product-img').src = (product.image && product.image.trim() !== "") 
+        ? (product.image.includes('/') ? product.image : `images/${product.image}`) 
+        : `images/${product.id}.jpg`;
+
       document.getElementById('detail-product-category').innerText = product.category;
       document.getElementById('detail-product-sku').innerText = `كود المنتج: ${product.id}`;
       document.getElementById('detail-product-desc').innerText = product.description || "لا توجد مواصفات تفصيلية مضافة لهذا المنتج حالياً.";
